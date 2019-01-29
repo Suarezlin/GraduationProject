@@ -1,0 +1,97 @@
+\documentclass[
+    bachelor,
+    % bigskip, % sets linespread factor to 1.5
+    % nofont, % remember to manally set the fonts
+    truefont,
+    % sourcefont,
+    pdflinks,
+    %colorlinks,
+    %compact,
+    %taskunderline, % 非常 dirty 的方式给任务书中的参考文献加下划线
+]{xjtuthesis}
+\graphicspath{{figures/}}
+
+\usepackage{tikz}
+\usepackage{etoolbox}
+\usetikzlibrary{positioning}
+\input{figures/tikzfig.tex}
+
+\usepackage{wrapfig} % 多张图片
+\usepackage{overpic} % mask_rcnn
+\usepackage{algorithm} % 算法框图
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入：}}
+\renewcommand{\algorithmicensure}{\textbf{输出：}}
+
+% \let\cite=\supercite
+
+% 将引用的文献的 BibTeX 放入 bibliography.bib
+\addbibresource{bibliography.bib}
+
+\begin{document}
+
+    % 封面信息
+    \input{pages/ch00.0-cover}
+    % 任务书信息
+    \input{pages/ch00.1-task}
+    % 评审意见信息
+    \input{pages/ch00.2-review}
+    % 摘要信息
+    \input{pages/ch00.3-abstract}
+
+    % 封面
+    \xjtuchead
+    % 任务书
+    \ctaskdescription
+    % 评审意见
+    \creviewopinion
+    % 答辩结果
+    \cfinalresult
+    % 中文摘要
+    \xjtucinfopage
+    % 英文摘要
+    \xjtueinfopage
+    % 目录
+    \xjtutoc
+
+    % 主要符号表，可以没有
+    %\input{pages/ch00.4-denotation}
+
+    % 正文
+    \xjtucontent
+    \newrefsection
+        % 绪论
+        %\input{pages/ch01-introduction}
+        % 理论框架
+       % \input{pages/ch02-theory}
+        % 算法实现
+        %\input{pages/ch03-algorithm}
+        % 实验结果
+        %\input{pages/ch04-experiment}
+        % 结论与展望
+        %\input{pages/ch05-conclusion}
+    \xjtuendcontent
+
+    % 致谢
+    %\input{pages/ch06-acknowledgements}
+
+    % 参考文献
+    %\xjtubib{bibliography}
+
+    % % 附录
+    %\xjtuappendix
+        %\input{pages/ch07-appendice}
+    %\xjtuendappendix
+
+    % 摘要信息
+    %\input{pages/ch99.0-topicreview}
+    %\input{pages/ch99.1-interimchecklist}
+    %\input{pages/ch99.2-progresschecklist}
+
+    %\xjtutopicreview
+    %\xjtuinterimchecklist
+    %\xjtuprogresschecklist
+
+\end{document}

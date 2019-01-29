@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <context id="MySQLTables" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <property name="mappers" value="com.suarezlin.utils.MyMapper"/>
+        </plugin>
+
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/snapod_dev"
+                        userId="admin"
+                        password="lzn19971012">
+            <property name="nullCatalogMeansCurrent" value="true"/>
+        </jdbcConnection>
+
+        <!-- 生成 DataObject 类存放位置 -->
+        <javaModelGenerator targetPackage="com.suarezlin.pojo" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件存放位置 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- 生成 DAO 类存放位置 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.suarezlin.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- 生成对应表及类名 -->
+        <table tableName="bgm"></table>
+        <table tableName="comments"></table>
+        <table tableName="search_records"></table>
+        <table tableName="user_like_videos"></table>
+        <table tableName="users"></table>
+        <table tableName="users_fans"></table>
+        <table tableName="users_report"></table>
+        <table tableName="videos"></table>
+    </context>
+</generatorConfiguration>

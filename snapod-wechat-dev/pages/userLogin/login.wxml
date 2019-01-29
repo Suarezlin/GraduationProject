@@ -1,0 +1,37 @@
+<view class="body">
+
+  <view class='content'>
+
+    <view>
+      <view class="login-icon">
+        <image class="login-img" src="../resource/images/dsp.jpg"></image>
+      </view>
+
+      <view class='inputGroup'>
+        <van-cell-group>
+          <van-field id="username" value="{{uasername}}" placeholder="请输入用户名" border="{{false}}" label="用户名" bind:change="onChange" />
+          <van-field id="password" value="{{password1}}" placeholder="请输入密码" border="{{false}}" type="password" label="密码" bind:change="onChange" />
+
+        </van-cell-group>
+      </view>
+    </view>
+  </view>
+
+  <view class='btnGroup'>
+    <view class='loginBtn'>
+      <van-button type='primary' block bind:click="doLogin" disabled='{{disabled}}'>
+         登录
+      </van-button>
+    </view>
+
+    <view class='goLoginBtn'>
+      <van-button type='danger' block bind:click="backToRegist">
+        没有账户? 去注册
+      </van-button>
+    </view>
+
+  </view>
+
+  <van-notify id="van-notify" />
+
+</view>

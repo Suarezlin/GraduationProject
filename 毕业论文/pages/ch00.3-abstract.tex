@@ -1,0 +1,58 @@
+% 关键词，中文。用全角分号「；」分割
+% 研究生的应首先从《汉语主题词表》中摘选
+\ckeywords{行人重识别；深度学习；强化学习；多摄像头选择；多CPU集群}
+
+% 提交日期，本科生不需要
+\cproddate{\the\year 年\the\month 月}
+
+% 论文类型，中文，本科生不需要
+% 从理论研究、应用基础、应用研究、研究报告、软件开发、设计报告、案例分析、调研报告、其它中选择
+\ctype{}
+
+% 论文标题，英文
+\etitle{Research for Multi-CPU Cluster Based Person Re-Identification}
+
+% 作者姓名，英文
+\eauthor{Yuanxun Li}
+
+% 学科，英文，本科生不需要
+\esubject{}
+
+% 导师姓名，英文
+\esupervisor{Hui He}
+
+% 关键词，英文。用半角分号和一个半角空格「; 」分割
+\ekeywords{Person Re-Identification; Deep Learning; Reinforcement Learning; Multi-Cameras Selection; Multi-CPUs Cluster}
+
+% 学科门类，英文
+% 从Philosophy（哲学）、Economics（经济学）、Law（法学）、Education（教育学）、Arts（文学）、
+%   Science（理学）、Engineering Science（工学）、Medicine（医学）、Management Science（管理学）中选择
+\ecate{Engineering Science}
+
+% 提交日期，英文，本科生不需要
+% 应当和 cproddate 保持一致
+\eproddate{\monthname{\month}\ \the\year}
+
+% 论文类型，英文，本科生不需要
+% 从Theoretical Research（理论研究）、Application Fundamentals（应用基础）、Applied Research（应用研究）、
+%   Research Report（研究报告）、Software Development（软件开发）、Design Report（设计报告）、
+%   Case Study（案例分析）、Investigation Report（调研报告）、其它（Other）中选择
+\etype{}
+
+% 摘要，中文。段间空行
+\cabstract{
+    随着视频监控技术的发展，无人值守的视频监控设备被越来越普遍地部署在国民社会的各个方面。在视频监控领域一个很重要且极具挑战性的问题是行人重识别。行人重识别，指的是在多个视野不重叠的监控视频中，重新识别那些之前出现过的行人，这其中即使是同一个行人的图片也存在着视觉上和特征分布上的巨大差异。行人重识别在实际应用中受诸多因素的影响，包括摄像头的部署位置、成像质量以及摄像头数量等等。如何从海量的摄像头部署方案中挑选出较为优秀的方案，是一个非常具有现实意义的问题。行人重识别所基于的深度学习模型需要大量的计算资源，超级计算机是计算机中功能最强、运算速度最快、存储容量最大的一类计算机，一般由多CPU集群组成。当前面向超级计算机的深度神经网络训练研究还处于起步阶段，因此，本文将探索在多CPU集群上的深度行人重识别问题，特别是多摄像头部署方案选择问题，致力于在项目过程中发现和解决问题，推动理论的发展和实际的应用。
+
+    本文实现了行人重识别领域最新的研究成果，同时推出了一个全新的、包含多个摄像头的数据集的初始版本，并提出了基于强化学习的摄像头部署方案选择模型，该模型在自有数据集上取得了理想的结果，与人类的认知达成一致，具有很好的可解释性。本文还展示了将模型部署在多CPU集群上训练的结果，研究了多CPU集群对于深度神经网络的训练过程的影响。
+
+    本文实现的行人重识别基线模型取得了接近原论文的准确率和识别性能，为后期进一步研究行人重识别领域其它问题提供了强有力的支持。面向多CPU集群的深度行人重识别模型训练验证了CPU和GPU在进行海量单精度浮点数运算的性能差异，同时也展示了多CPU集群在训练深度神经网络方面的巨大潜力。本文推出的行人重识别数据集包含了17个摄像头，并且还包含了完整的行人跟踪场景，不仅在摄像头数量上远远多于现有主流的行人重识别数据集，而且为行人重识别问题新的评估方式的提出提供了基础。本文提出的基于强化学习模型的摄像头部署方案选择模型，将强化学习算法运用到多摄像头选择问题当中，不仅避免了穷举计算，而且达到了预期的效果。
+}
+
+% 摘要，英文。段间空行
+\eabstract{
+    With the development of video surveillance technology, unattended video surveillance devices are being deployed more and more widely in all aspects of the civil society. A very important and challenging issue in video surveillance is person re-identification. Person re-identification is to match individual images of the same person captured by different non-overlapping camera views against significant and unknown cross-view feature distortion. Person re-identificationy is affected by many factors in practical applications, including the deployment position of the cameras, the imaging quality, and the number of cameras. How to pick out a better scheme from a large number of camera deployment solutions is a very practical issue. Person re-identificationy based on the deep learning model requires a lot of computing resources. Supercomputer is the fastest, most powerful, and of the largest storage capacity computers, generally composed of multiple CPU clusters. The current deep neural network training for supercomputers is still in its infancy. Therefore, this paper will explore the issues of deep person re-identification on multi-CPU clusters, especially the selection of multi-camera deployment solutions, and is committed to discovering and solving problems during the project process, and promoting the development of theory and practical application.
+
+    This paper implemented the state-of-the-art of ​​person re-identification baseline model. At the same time, we introduced a initial version of a dataset containing multiple cameras, and proposed a camera deployment solution selection model based on reinforcement learning. This model is evaluated by our dataset. The results achieved, in agreement with human cognition, are very interpretable. This paper also shows the results of training the model deployed on a multi-CPU cluster, and studies the impact of multi-CPU clusters on the training process of deep neural networks.
+
+    The person re-identification baseline model re-implemented has achieved close to the original paper's accuracy and recognition performance, and is readily extended to further research on other areas of person re-identification. The deep person re-identification model based on multi-CPU clusters proved the performance difference between CPU and GPU in massive single-precision floating-point operations, and also shows the great potential of multi-CPU clusters in training deep neural networks. The person re-identification data set introduced in this paper contains 17 cameras, which is far more than the number of cameras in the current mainstream person re-identification dataset, and it also includes a complete pedestrian tracking scene, issuing a new person re-identification problem. The camera deployment scheme selection model based on the reinforcement learning model proposed in this paper applies the reinforcement learning algorithm to multiple camera selection problems, which not only avoids exhaustive calculations, but also achieves the desired results.
+}
