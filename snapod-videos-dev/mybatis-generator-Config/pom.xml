@@ -21,7 +21,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j</artifactId>
-            <version>1.3.8.RELEASE</version>
+            <version>LATEST</version>
         </dependency>
 
         <!-- 阿里开源数据源 -->
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.1</version>
+            <version>1.3.2</version>
         </dependency>
         <!--mapper-->
         <dependency>
@@ -143,6 +143,8 @@
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.7.1</version>
+                </plugin>
+                <plugin>
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>

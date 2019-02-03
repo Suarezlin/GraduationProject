@@ -62,6 +62,9 @@ Page({
           });
           app.userInfo = res.data.data;
           // TODO: 跳转
+          wx.redirectTo({
+            url: "/pages/mine/mine",
+          })
         } else if (status == 500) {
           wx.hideLoading();
           Notify({

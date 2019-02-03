@@ -1,7 +1,7 @@
 //app.js
 App({
 
-  serverUrl: "http://web.f.suarezlin.net:8080",
+  serverUrl: "http://wechat.ngrok.suarezlin.com",
 
   userInfo: null,
 

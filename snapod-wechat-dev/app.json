@@ -1,13 +1,13 @@
 {
   "pages":[
-    "pages/userRegist/regist",
     "pages/userLogin/login",
+    "pages/mine/mine",
+    "pages/userRegist/regist",
     "pages/index/index"
-    
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#F5F5F5",
     "navigationBarTitleText": "snapod 短视频",
     "navigationBarTextStyle":"black"
   },
@@ -60,6 +60,7 @@
     "van-rate": "../../dist/rate/index",
     "van-collapse": "../../dist/collapse/index",
     "van-collapse-item": "../../dist/collapse-item/index",
-    "van-picker": "../../dist/picker/index"
+    "van-picker": "../../dist/picker/index",
+    "i-avatar": "../../dist2/avatar/index"
   }
 }

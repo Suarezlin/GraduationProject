@@ -77,7 +77,7 @@ Page({
     } else {
       var serverUrl = app.serverUrl;
       wx.showLoading({
-        title: '登录中',
+        title: '注册中',
       });
       wx.request({
         url: serverUrl + '/register',
@@ -100,7 +100,9 @@ Page({
               backgroundColor: "#1E90FF"
             });
             app.userInfo = res.data.data;
-            // TODO: 跳转
+            wx.redirectTo({
+              url: "/pages/mine/mine",
+            })
           } else if (status == 500) {
             wx.hideLoading();
             Notify({
