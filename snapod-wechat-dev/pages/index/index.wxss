@@ -1,21 +1,40 @@
-/**index.wxss**/
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
+.avatar {
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
+  margin-right: 10px;
+  /* display: inline-block; */
 }
 
-.userinfo-nickname {
-  color: #aaa;
+.popup {
+  width: 80%;
+  text-align: center;
+  padding-bottom: 15px;
 }
 
-.usermotto {
-  margin-top: 200px;
+.button {
+    width: 80%;
+    margin-top: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.content {
+  width: 100%;
+  height: 200px;
+}
+
+.footer {
+  /* vertical-align:middle; */
+  padding: 1px;
+}
+
+.cover {
+  width: 100%;
+  height: 100%;
+}
+
+.footerWord {
+  color: #A9A9A9;
+  font-size: 15px;
 }

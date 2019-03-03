@@ -1,9 +1,12 @@
 package com.suarezlin.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import java.util.Date;
 
+@ApiModel(value = "视频实体类", description = "用户上传视频的实体类")
 public class Videos {
     @Id
     private String id;

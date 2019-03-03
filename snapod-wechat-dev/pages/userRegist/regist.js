@@ -99,7 +99,8 @@ Page({
               duration: 3000,
               backgroundColor: "#1E90FF"
             });
-            app.userInfo = res.data.data;
+            app.setGlobalUserInfo(res.data.data)
+            //app.userInfo = res.data.data;
             wx.redirectTo({
               url: "/pages/mine/mine",
             })

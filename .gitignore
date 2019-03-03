@@ -11,6 +11,12 @@
 *.cb2
 .*.lb
 
+# 排除视频与 bgm 与图片文件
+*.mp4
+*.mp3
+*.jpg
+ProjectFile/*
+
 ## Intermediate documents:
 *.dvi
 *.xdv

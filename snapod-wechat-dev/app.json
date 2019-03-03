@@ -1,15 +1,18 @@
 {
-  "pages":[
+  "pages": [
+    "pages/index/index",
     "pages/userLogin/login",
+    "pages/videoInfo/videoInfo",
     "pages/mine/mine",
     "pages/userRegist/regist",
-    "pages/index/index"
+    "pages/chooseBgm/chooseBgm",
+    "pages/search/search"
   ],
-  "window":{
-    "backgroundTextStyle":"light",
+  "window": {
+    "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#F5F5F5",
     "navigationBarTitleText": "snapod 短视频",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle": "black"
   },
   "debug": true,
   "usingComponents": {
@@ -62,5 +65,9 @@
     "van-collapse-item": "../../dist/collapse-item/index",
     "van-picker": "../../dist/picker/index",
     "i-avatar": "../../dist2/avatar/index"
+  },
+  "networkTimeout": {
+    "request": 200000,
+    "uploadFile": 200000
   }
 }

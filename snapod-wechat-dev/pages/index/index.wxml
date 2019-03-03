@@ -1,13 +1,73 @@
-<!--index.wxml-->
-<view class="container">
-  <view class="userinfo">
-    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
+<view>
+  <van-panel use-footer-slot wx:for="{{videoList}}">
+    <view slot="header">
+      <block wx:if="{{item.videoDesc != null}}">
+        <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" border="{{ false }}">
+        <view slot="icon" bindtap='toUserSpace' id="{{item.userId}}">
+          <image class='avatar' src="{{serverUrl}}{{item.faceImage}}" mode='aspectFill'></image>
+        </view>
+
+        <van-icon slot="right-icon" name="more" size="25px" custom-style="margin-top: 10px" bind:click="showProcessPanel" />
+      </van-cell>
+      </block>
+
+      <block wx:if="{{item.videoDesc == null}}">
+        <van-cell title="新视频" label="{{item.nickName}}" border="{{ false }}">
+        <view slot="icon" bindtap='toUserSpace'>
+          <image class='avatar' src="{{serverUrl}}{{item.faceImage}}" mode='aspectFill'></image>
+        </view>
+
+        <van-icon slot="right-icon" name="more" size="25px" custom-style="margin-top: 10px" bind:click="showProcessPanel" />
+      </van-cell>
+      </block>
+
+      <view class='content' bindtap='getVideo'>
+        <image class="cover" src='{{serverUrl}}{{item.coverPath}}' mode="aspectFill" data-arrIndex="{{index}}"></image>
+
+      </view>
+
+      <view slot="footer">
+        <van-cell value="{{item.likeCounts}} 人喜欢" border="{{ false }}">
+          <!-- <van-icon slot="icon" name="{{isLike.icon}}" size="18px" custom-style="margin-right: 5px;" color="#FFD700" /> -->
+        </van-cell>
+      </view>
+    </view>
+  </van-panel>
 </view>
+
+
+<!-- <van-panel use-footer-slot footer-class="footer">
+  <view slot="header">
+    <van-cell title="视频测试" label="admin" border="{{ false }}">
+      <view slot="icon" bindtap='toUserSpace'>
+        <image class='avatar' src="{{serverUrl}}{{imageUrl}}" mode='aspectFill'></image>
+      </view>
+
+      <van-icon slot="right-icon" name="more" size="25px" custom-style="margin-top: 10px" bind:click="showProcessPanel" />
+    </van-cell>
+  </view>
+
+  <view class='content' bindtap='getVideo'>
+    <image class="cover" src='{{serverUrl}}{{coverUrl}}' mode="aspectFill"></image>
+
+  </view>
+
+  <view slot="footer">
+    <van-cell title="{{isLike.word}}" value="{{likeNum}} 人喜欢" border="{{ false }}" clickable bind:click="doLike">
+      <van-icon slot="icon" name="{{isLike.icon}}" size="18px" custom-style="margin-right: 5px;" color="#FFD700" />
+    </van-cell>
+  </view>
+
+</van-panel> -->
+
+<van-popup show="{{ show }}" bind:close="onClose" custom-class="popup">
+  <van-button type="danger" custom-class="button" bind:click="report">举报</van-button>
+</van-popup>
+
+<van-tabbar active="{{ active }}" bind:change="onChange" fixed>
+  <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+  <van-tabbar-item icon="search">搜索</van-tabbar-item>
+  <van-tabbar-item icon="plus">发布视频</van-tabbar-item>
+  <van-tabbar-item icon="star-o">关注</van-tabbar-item>
+  <van-tabbar-item icon="user-o">我</van-tabbar-item>
+</van-tabbar>

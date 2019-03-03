@@ -6,7 +6,20 @@ Page({
   data: {
     username: "",
     password: "",
-    disabled: true
+    disabled: true,
+    url: "",
+  },
+
+  onLoad: function(params) {
+    let url = params.redirectUrl;
+    if (url == null || url == undefined) {
+      url = "";
+    }
+    url = url.replace(/#/g, "?");
+    url = url.replace(/@/g, "=");
+    this.setData({
+      url: url
+    });
   },
 
   onChange: function(e) {
@@ -33,6 +46,7 @@ Page({
   },
 
   doLogin: function(e) {
+    const that = this;
     var username = this.data.username;
     var password = this.data.password;
 
@@ -60,11 +74,20 @@ Page({
             duration: 3000,
             backgroundColor: "#1E90FF"
           });
-          app.userInfo = res.data.data;
+          app.setGlobalUserInfo(res.data.data)
+          //app.userInfo = res.data.data;
           // TODO: 跳转
-          wx.redirectTo({
-            url: "/pages/mine/mine",
-          })
+
+          if (that.data.url != "") {
+            wx.redirectTo({
+              url: that.data.url,
+            })
+          } else {
+            wx.redirectTo({
+              url: "/pages/index/index",
+            })
+          }
+
         } else if (status == 500) {
           wx.hideLoading();
           Notify({

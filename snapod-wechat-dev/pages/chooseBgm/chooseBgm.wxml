@@ -1,0 +1,66 @@
+<view class='body'>
+  <view class="content">
+
+    <van-radio-group value="{{ radio }}">
+      <van-cell-group>
+
+        <block>
+          <van-cell title="无 BGM" label="生成视频为视频原声" clickable data-name="noBgm" id="noBgm" bind:click="onRadioChange" size="large">
+            <van-radio name="noBgm" />
+          </van-cell>
+        </block>
+        <block wx:for="{{bgmList}}">
+          <van-cell title="{{item.name}}" label="{{item.author}}" icon="{{play[index]}}" clickable data-name="{{item.id}}" id="{{index}}" bind:click="onRadioChange" size="large">
+            <van-radio name="{{item.id}}" />
+          </van-cell>
+        </block>
+      </van-cell-group>
+    </van-radio-group>
+
+    <!-- <van-radio-group value="{{ radio }}" bind:change="onRadioChange">
+
+      <block wx:for="{{bgmList}}">
+        <view class='container'>
+          <audio name="{{item.name}}" author="{{item.author}}" src="{{serverUrl}}{{item.path}}" style='width:300px' id="myAudio" controls loop></audio>
+          <van-radio name="{{item.id}}" style='margin-top:20px;'></van-radio>
+        </view>
+      </block>
+    </van-radio-group> -->
+
+    <!-- <radio-group name="bgmId">
+
+
+      <block wx:for="{{bgmList}}">
+        <view class='container'>
+          <audio name="{{item.name}}" author="{{item.author}}" src="{{serverUrl}}{{item.path}}" style='width:300px' id="myAudio" controls loop></audio>
+          <radio style='margin-top:20px;' value='{{item.id}}'></radio>
+        </view>
+      </block>
+
+
+    </radio-group> -->
+
+    <view class="inputView">
+      <van-field id="desc" value="{{description}}" right placeholder="说点什么吧" border="{{false}}" label="视频描述" bind:change="onDescChange" />
+
+    </view>
+
+  </view>
+
+
+  <view class='btnGroup'>
+    <view class='loginBtn'>
+      <van-button type='primary' block bind:click="upload" disabled='{{disabled}}'>
+        上传视频
+      </van-button>
+    </view>
+
+    <view class='goLoginBtn'>
+      <van-button type='danger' block bind:click="resetStatus">
+        重置
+      </van-button>
+    </view>
+
+  </view>
+  <van-notify id="van-notify" />
+</view>

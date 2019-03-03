@@ -60,7 +60,7 @@ public class RegisterLoginController extends BasicController {
 
     public UsersVO setUserRedisSessionToken(Users user) {
         String uniqueToken = UUID.randomUUID().toString();
-        redisOperator.set(USER_REDIS_SESSION + ":" + user.getId(), uniqueToken, 60 * 30);
+        redisOperator.set(USER_REDIS_SESSION + ":" + user.getId(), uniqueToken, 60 * 60 * 24 * 2);
         UsersVO usersVO = new UsersVO();
         BeanUtils.copyProperties(user, usersVO);
         usersVO.setUserToken(uniqueToken);

@@ -1,6 +1,7 @@
 package com.suarezlin.service;
 
 import com.suarezlin.pojo.Users;
+import org.apache.catalina.User;
 
 public interface UserService {
     /**
@@ -23,5 +24,16 @@ public interface UserService {
      */
     public Users matchUser(Users users);
 
+    public void updateUser(Users users);
+
+    public Users getUserById(String id);
+
+    public boolean isUserLikeVideo(String userId, String videoId);
+
+    public void saveUserFanRelation(String userId, String fanId);
+
+    public void deleteUserFanRelation(String userId, String fanId);
+
+    public Boolean hasUserFollow(String userId, String fanId);
 
 }

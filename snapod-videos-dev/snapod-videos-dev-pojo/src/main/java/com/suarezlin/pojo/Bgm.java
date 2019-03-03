@@ -1,7 +1,10 @@
 package com.suarezlin.pojo;
 
+import io.swagger.annotations.ApiModel;
+
 import javax.persistence.Id;
 
+@ApiModel(value = "BGM 实体类", description = "表示 BGM 的 POJO 类")
 public class Bgm {
     @Id
     private String id;
