@@ -21,6 +21,20 @@
     <result column="nickname" jdbcType="VARCHAR" property="nickName" />
   </resultMap>
 
+  <resultMap id="UserMap" type="com.suarezlin.pojo.Users">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id"/>
+    <result column="username" jdbcType="VARCHAR" property="username"/>
+    <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="face_image" jdbcType="VARCHAR" property="faceImage"/>
+    <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+    <result column="fans_counts" jdbcType="INTEGER" property="fansCounts"/>
+    <result column="follow_counts" jdbcType="INTEGER" property="followCounts"/>
+    <result column="receive_like_counts" jdbcType="INTEGER" property="receiveLikeCounts"/>
+  </resultMap>
+
   <select id="getAllVideos" resultMap="BaseResultMap" parameterType="string">
     select v.*, u.face_image as face_image, u.nickname as nickname
     from videos as v inner join users as u on u.id=v.user_id
@@ -39,5 +53,46 @@
   <update id="reduceVideoLikeCount" parameterType="string">
     update videos set like_counts=like_counts-1 where id=#{videoId}
   </update>
+
+  <select id="getUserVideos" parameterType="string" resultMap="BaseResultMap">
+      select v.*, u.face_image as face_image, u.nickname as nickname
+      from videos as v inner join users as u on u.id=v.user_id
+      where v.user_id = #{publisherId}
+      and v.status = 1
+      order by v.create_time desc
+  </select>
+
+
+  <select id="getUserLikeVideos" parameterType="string" resultMap="BaseResultMap">
+      select v.*, u.face_image as face_image, u.nickname as nickname
+      from user_like_videos as ulv
+      join videos as v on v.id = ulv.video_id
+      join users as u on u.id = ulv.user_id
+      where ulv.user_id = #{userId}
+      and v.status = 1
+      order by v.create_time desc
+  </select>
+
+  <select id="getUserFollowVideos" parameterType="string" resultMap="BaseResultMap">
+      select v.*, u.face_image as face_image, u.nickname as nickname
+      from videos as v, users as u
+      where v.user_id in (
+        select uf.user_id
+        from users_fans as uf
+        where uf.fan_id = #{userId}
+      ) and u.id = v.user_id
+      and v.status = 1
+      order by v.create_time desc
+  </select>
+
+  <delete id="deleteVideo" parameterType="string">
+    delete from videos where id = #{videoId}
+  </delete>
+
+  <select id="getVideoLiker" parameterType="string" resultMap="UserMap">
+    select u.*
+    from user_like_videos as ulv inner join users as u on u.id = ulv.user_id
+    where ulv.video_id = #{videoId}
+  </select>
 
 </mapper>

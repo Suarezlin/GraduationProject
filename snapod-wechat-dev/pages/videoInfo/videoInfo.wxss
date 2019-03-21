@@ -40,15 +40,27 @@ page {
     white-space: pre-wrap;
 }
 
+.container-fixed {
+  position: fixed;
+  bottom: 10px; 
+  width: 100%;
+}
+.full-screen {
+  position: absolute;
+  top: 20rpx;
+  z-index: 100;
+  width: 50rpx;
+  height: 50rpx;
+  left: 50%;
+  margin-left: -25rpx;
+}
+
 .container-bottom {
-    /* bottom: 10px;  */
     display: flex;
-    margin-top: 160rpx;
+    justify-content: space-between;
     margin-left: 50rpx;
     margin-right: 50rpx;
     /* margin-bottom: 10rpx; */
-    justify-content: space-between;
-    /* position: fixed;  */
 }
 
 .size-me {

@@ -4,7 +4,7 @@ function uploadVideo() {
     sourceType: ['album', 'camera'],
     maxDuration: 60,
     camera: 'back',
-    compressed: true,
+    compressed: false,
     success(res) {
       //console.log(res);
       let duration = res.duration;

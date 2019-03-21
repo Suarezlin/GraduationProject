@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.suarezlin.mapper.*;
 import com.suarezlin.pojo.SearchRecords;
 import com.suarezlin.pojo.UserLikeVideos;
+import com.suarezlin.pojo.Users;
 import com.suarezlin.pojo.VO.VideosVO;
 import com.suarezlin.pojo.Videos;
 import com.suarezlin.service.UserService;
@@ -129,5 +130,67 @@ public class VideoServiceImpl implements VideoService {
         videosMapperCustom.reduceVideoLikeCount(videoId);
         // 用户受喜欢数量减一
         usersMapper.reduceReceiveLikeCount(videoCreaterId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedResult getUserVideos(String publisherId, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<VideosVO> videos = videosMapperCustom.getUserVideos(publisherId);
+
+        PageInfo<VideosVO> pageInfo = new PageInfo<>(videos);
+
+        PagedResult result = new PagedResult();
+        result.setPage(page);
+        result.setRows(videos);
+        result.setTotal(pageInfo.getPages());
+        result.setRecords(pageInfo.getTotal());
+        return result;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedResult getUserLikeVideos(String userId, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<VideosVO> videos = videosMapperCustom.getUserLikeVideos(userId);
+
+        PageInfo<VideosVO> pageInfo = new PageInfo<>(videos);
+
+        PagedResult result = new PagedResult();
+        result.setPage(page);
+        result.setRows(videos);
+        result.setTotal(pageInfo.getPages());
+        result.setRecords(pageInfo.getTotal());
+        return result;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedResult getUserFollowVideos(String userId, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<VideosVO> videos = videosMapperCustom.getUserFollowVideos(userId);
+
+        PageInfo<VideosVO> pageInfo = new PageInfo<>(videos);
+
+        PagedResult result = new PagedResult();
+        result.setPage(page);
+        result.setRows(videos);
+        result.setTotal(pageInfo.getPages());
+        result.setRecords(pageInfo.getTotal());
+        return result;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteVideo(String videoId) {
+        List<Users> users = videosMapperCustom.getVideoLiker(videoId);
+        Videos video = videosMapperCustom.selectByPrimaryKey(videoId);
+        // 删除前取消所有的赞
+        for (Users u : users) {
+            userNotLikeVideo(u.getId(), videoId, video.getUserId());
+        }
+
+        // TODO: 删除视频所有评论
+        videosMapperCustom.deleteVideo(videoId);
     }
 }

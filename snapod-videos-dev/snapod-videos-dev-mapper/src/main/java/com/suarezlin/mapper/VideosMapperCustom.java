@@ -1,5 +1,6 @@
 package com.suarezlin.mapper;
 
+import com.suarezlin.pojo.Users;
 import com.suarezlin.pojo.VO.VideosVO;
 import com.suarezlin.pojo.Videos;
 import com.suarezlin.utils.MyMapper;
@@ -23,5 +24,15 @@ public interface VideosMapperCustom extends MyMapper<Videos> {
      * @param videoId 视频 ID
      */
     public void reduceVideoLikeCount(String videoId);
+
+    public List<VideosVO> getUserVideos(String publisherId);
+
+    public List<VideosVO> getUserLikeVideos(String userId);
+
+    public List<VideosVO> getUserFollowVideos(String userId);
+
+    public void deleteVideo(String videoId);
+
+    public List<Users> getVideoLiker(String videoId);
 
 }

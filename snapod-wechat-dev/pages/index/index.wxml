@@ -1,5 +1,5 @@
 <view>
-  <van-panel use-footer-slot wx:for="{{videoList}}">
+  <van-panel use-footer-slot footer-class="footer" wx:for="{{videoList}}">
     <view slot="header">
       <block wx:if="{{item.videoDesc != null}}">
         <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" border="{{ false }}">

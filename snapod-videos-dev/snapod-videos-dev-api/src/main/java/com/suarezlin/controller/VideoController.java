@@ -217,4 +217,54 @@ public class VideoController {
         return CommonReturnType.ok();
     }
 
+//    @GetMapping("/getComment")
+//    public CommonReturnType getComment() {
+//
+//    }
+
+    @GetMapping("/getVideo")
+    public CommonReturnType getUserVideos(String publisherId, Integer page, Integer pageSize) {
+        if (StringUtils.isBlank(publisherId) || StringUtils.isEmpty(publisherId)) {
+            return CommonReturnType.errorMsg("用户 Id 不能为空");
+        }
+        PagedResult pagedResult = videoService.getUserVideos(publisherId, page, pageSize);
+        return CommonReturnType.ok(pagedResult);
+    }
+
+    @GetMapping("/getLikeVideo")
+    public CommonReturnType getLikeVideo(String userId, Integer page, Integer pageSize) {
+        if (StringUtils.isBlank(userId) || StringUtils.isEmpty(userId)) {
+            return CommonReturnType.errorMsg("用户 Id 不能为空");
+        }
+        PagedResult pagedResult = videoService.getUserLikeVideos(userId, page, pageSize);
+        return CommonReturnType.ok(pagedResult);
+    }
+
+    @GetMapping("/getFollowVideo")
+    public CommonReturnType getFollowVideo(String userId, Integer page, Integer pageSize) {
+        if (StringUtils.isBlank(userId) || StringUtils.isEmpty(userId)) {
+            return CommonReturnType.errorMsg("用户 Id 不能为空");
+        }
+        PagedResult pagedResult = videoService.getUserFollowVideos(userId, page, pageSize);
+        return CommonReturnType.ok(pagedResult);
+    }
+
+    @PostMapping("/delete")
+    public CommonReturnType deleteVideo(String videoId) {
+        if (StringUtils.isBlank(videoId) || StringUtils.isEmpty(videoId)) {
+            return CommonReturnType.errorMsg("视频 Id 不能为空");
+        }
+        Videos video = videoService.getVideoById(videoId);
+        videoService.deleteVideo(videoId);
+        File videoFile = new File(filePath + video.getVideoPath());
+        File coverFile = new File(filePath + video.getCoverPath());
+        if (!videoFile.delete()) {
+            return CommonReturnType.errorMsg("删除失败");
+        }
+        if (!coverFile.delete()) {
+            return CommonReturnType.errorMsg("删除失败");
+        }
+        return CommonReturnType.ok();
+    }
+
 }

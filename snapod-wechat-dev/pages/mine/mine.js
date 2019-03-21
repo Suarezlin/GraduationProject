@@ -1,5 +1,6 @@
 var videoUtil = require('../../utils/videoUtil.js')
 import Notify from '../../dist/notify/notify';
+import Dialog from '../../dist/dialog/dialog';
 
 const app = getApp()
 
@@ -20,14 +21,17 @@ Page({
     isSelectedFollow: "",
 
     myVideoList: [],
+    showMyVideoList: [],
     myVideoPage: 1,
     myVideoTotal: 1,
 
     likeVideoList: [],
+    showLikeVideoList: [],
     likeVideoPage: 1,
     likeVideoTotal: 1,
 
     followVideoList: [],
+    showFollowVideoList: [],
     followVideoPage: 1,
     followVideoTotal: 1,
 
@@ -38,6 +42,193 @@ Page({
     scrollTop: 0,
     nickname: "",
     publisher: "",
+    serverUrl: app.serverUrl,
+    tabActive: 0,
+  },
+
+  getVideoList: function (page, pageSize, isSaveRecord) {
+    const that = this;
+    let serverUrl = this.data.serverUrl;
+    const userInfo = app.getGlobalUserInfo();
+
+    wx.showLoading({
+      title: '加载中',
+    });
+
+    
+
+    let searchValue = that.data.searchValue;
+    let url = `${serverUrl}/video/getVideo/?publisherId=${that.data.publisher}&page=${page}&pageSize=${pageSize}`;
+    wx.request({
+      url: url,
+      method: "GET",
+      header: {
+        'userId': userInfo.id,
+        'userToken': userInfo.userToken
+      },
+      success: function (res) {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+        let data = res.data;
+        console.log(data);
+        let myVideoPage = that.data.myVideoPage;
+        let myVideoList = that.data.myVideoList;
+        let myVideoTotal = that.data.myVideoTotal;
+
+        // 判断是否为第一页
+        if (page === 1) {
+          that.setData({
+            myVideoList: []
+          });
+        }
+
+        let currentVideoList = that.data.myVideoList;
+        let newVideoList = data.data.rows;
+        that.setData({
+          myVideoTotal: data.data.total,
+          myVideoPage: data.data.page,
+          myVideoList: currentVideoList.concat(newVideoList),
+        });
+
+        if (that.data.tabActive == 0) {
+          that.setData({
+            showMyVideoList: currentVideoList.concat(newVideoList)
+          });
+        }
+        wx.hideLoading();
+      }
+    });
+
+  },
+
+  getLikeVideoList: function (page, pageSize, isSaveRecord) {
+    const that = this;
+    let serverUrl = this.data.serverUrl;
+    const userInfo = app.getGlobalUserInfo();
+
+    wx.showLoading({
+      title: '加载中',
+    });
+
+    let searchValue = that.data.searchValue;
+    let url = `${serverUrl}/video/getLikeVideo/?userId=${that.data.publisher}&page=${page}&pageSize=${pageSize}`;
+    wx.request({
+      url: url,
+      method: "GET",
+      header: {
+        'userId': userInfo.id,
+        'userToken': userInfo.userToken
+      },
+      success: function (res) {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+        let data = res.data;
+        console.log(data);
+      
+        let likeVideoPage = that.data.likeVideoPage;
+        let likeVideoList = that.data.likeVideoList;
+        let likeVideoTotal = that.data.likeVideoTotal;
+        // 判断是否为第一页
+        if (page === 1) {
+          that.setData({
+            likeVideoList: []
+          });
+        }
+
+        let currentVideoList = that.data.likeVideoList;
+        let newVideoList = data.data.rows;
+        that.setData({
+          likeVideoTotal: data.data.total,
+          likeVideoPage: data.data.page,
+          likeVideoList: currentVideoList.concat(newVideoList),
+        });
+        if (that.data.tabActive == 1) {
+          that.setData({
+            showLikeVideoList: currentVideoList.concat(newVideoList)
+          });
+        }
+        wx.hideLoading();
+      }
+    });
+
+  },
+
+  getFollowVideoList: function (page, pageSize, isSaveRecord) {
+    const that = this;
+    let serverUrl = this.data.serverUrl;
+    const userInfo = app.getGlobalUserInfo();
+
+    wx.showLoading({
+      title: '加载中',
+    });
+
+    let searchValue = that.data.searchValue;
+    let url = `${serverUrl}/video/getFollowVideo/?userId=${that.data.publisher}&page=${page}&pageSize=${pageSize}`;
+    wx.request({
+      url: url,
+      method: "GET",
+      header: {
+        'userId': userInfo.id,
+        'userToken': userInfo.userToken
+      },
+      success: function (res) {
+        wx.hideLoading();
+        wx.stopPullDownRefresh();
+        let data = res.data;
+        console.log(data);
+
+        let followVideoPage = that.data.followVideoPage;
+        let followVideoList = that.data.followVideoList;
+        let followVideoTotal = that.data.followVideoTotal;
+        // 判断是否为第一页
+        if (page === 1) {
+          that.setData({
+            followVideoList: []
+          });
+        }
+
+        let currentVideoList = that.data.followVideoList;
+        let newVideoList = data.data.rows;
+        that.setData({
+          followVideoTotal: data.data.total,
+          followVideoPage: data.data.page,
+          followVideoList: currentVideoList.concat(newVideoList),
+        });
+        if (that.data.tabActive == 2) {
+          that.setData({
+            showFollowVideoList: currentVideoList.concat(newVideoList)
+          });
+        }
+        wx.hideLoading();
+      }
+    });
+
+  },
+
+  onTabChange: function(e) {
+    let tab = e.detail.index;
+    this.setData({
+      tabActive: tab
+    });
+    if (tab == 0) {
+      this.setData({
+        showMyVideoList: this.data.myVideoList,
+        showLikeVideoList: [],
+        showFollowVideoList: []
+      });
+    } else if (tab == 1) {
+      this.setData({
+        showLikeVideoList: this.data.likeVideoList,
+        showMyVideoList: [],
+        showFollowVideoList: []
+      });
+    } else {
+      this.setData({
+        showFollowVideoList: this.data.followVideoList,
+        showLikeVideoList: [],
+        showMyVideoList: []
+      });
+    }
   },
 
   onLoad: function(params) {
@@ -87,6 +278,9 @@ Page({
             nickname: user.nickname,
             publisher: user.id
           });
+          that.getVideoList(that.data.myVideoPage, 10);
+          that.getLikeVideoList(that.data.likeVideoPage, 10);
+          that.getFollowVideoList(that.data.followVideoPage, 10);
         } else if (res.data.status == 502) {
           Notify({
             text: res.data.msg,
@@ -125,7 +319,6 @@ Page({
         }
       }
     });
-
   },
 
   onPageScroll(event) {
@@ -135,9 +328,9 @@ Page({
   },
 
 
-  followMe: function(e) {
+  // followMe: function(e) {
 
-  },
+  // },
 
 
 
@@ -226,14 +419,48 @@ Page({
 
   // 点击跳转到视频详情页面
   showVideo: function(e) {
-
-
-
+    console.log(e);
+    let index = e.currentTarget.dataset.arrindex;
+    let tab = this.data.tabActive;
+    let id;
+    if (tab == 0) {
+      id = this.data.myVideoList[index].id;  
+    } else if (tab == 1) {
+      id = this.data.likeVideoList[index].id;
+    } else {
+      id = this.data.followVideoList[index].id;
+    }
+    wx.navigateTo({
+      url: `/pages/videoInfo/videoInfo?id=${id}`,
+    });
   },
 
   // 到底部后触发加载
   onReachBottom: function() {
-
+    const that = this;
+    let tab = that.data.tabActive;
+    if (tab == 0) {
+      if (that.data.myVideoPage < that.data.myVideoTotal) {
+        wx.showLoading({
+          title: '加载中',
+        });
+        that.getVideoList(that.data.myVideoPage + 1, 10);
+      }
+    } else if (tab == 1) {
+      if (that.data.likeVideoPage < that.data.likeVideoTotal) {
+        wx.showLoading({
+          title: '加载中',
+        });
+        that.getLikeVideoList(that.data.likeVideoPage + 1, 10);
+      }
+    } else {
+      if (that.data.followVideoPage < that.data.followVideoTotal) {
+        wx.showLoading({
+          title: '加载中',
+        });
+        that.getFollowVideoList(that.data.followVideoPage + 1, 10);
+      }
+    }
   },
 
   followMe: function() {
@@ -275,5 +502,50 @@ Page({
         }
       }
     });
+  },
+
+  onSwipeClose:function(e) {
+    // console.log(e);
+    const that = this;
+    let position = e.detail.position;
+    let index = e.target.dataset.arrindex;
+    let instance = e.detail.instance;
+    if (position == "right") {
+      Dialog.confirm({
+        message: '确定删除视频吗？'
+      }).then(() => {
+        let serverUrl = that.data.serverUrl;
+        let url = `${serverUrl}/video/delete?videoId=${that.data.myVideoList[index].id}`;
+        const userInfo = app.getGlobalUserInfo();
+        let header = {
+          'userId': userInfo.id,
+          'userToken': userInfo.userToken
+        };
+        wx.request({
+          url: url,
+          header: header,
+          method: "POST",
+          success(res) {
+            let data = res.data;
+            if (data.status == 200) {
+              let videos = that.data.myVideoList;
+              videos.splice(index, 1);
+              that.setData({
+                myVideoList: videos,
+                showMyVideoList: videos
+              });
+            } else if (data.status == 500) {
+              Notify({
+                text: "删除失败",
+                duration: 3000,
+                // backgroundColor: "#FF4444"
+              });
+            }
+          }
+        })
+        instance.close();
+      });
+    }
+
   }
 })

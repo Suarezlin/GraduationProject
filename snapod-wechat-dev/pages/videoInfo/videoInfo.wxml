@@ -1,9 +1,14 @@
 <view style='width:100%;height:100%'>
+  <view class='full-screen'>
+  <van-icon name="expand" size="50rpx"  wx:if="{{hasFullScreen}}" bind:click="fullScreen" color="white"/>
+  </view>
   <video id="myVideo" src="{{serverUrl}}{{video.videoPath}}" controls="{{false}}" autoplay='{{true}}' loop='{{true}}' style='width:100%;height:100%' object-fit="{{fit}}" show-mute-btn="{{true}}">
     <cover-view class='container'>
       <!-- 上传视频 -->
 
       <cover-image src='../resource/images/camera.png' style='width:50rpx;height:50rpx;' bindtap='upload'></cover-image>
+
+
 
 
       <!-- 搜索按钮 -->
@@ -12,7 +17,7 @@
 
     <cover-view class='container-me'>
       <!-- 头像 -->
-      <cover-image class="face" src='{{serverUrl}}{{publisher.faceImage}}' bindtap='showPublisher'></cover-image>
+      <cover-image class="face" src='{{serverUrl}}{{publisher.faceImage}}' bindtap='showPublisher' mode="aspectFill"></cover-image>
 
 
       <!-- 喜欢收藏按钮 -->
@@ -37,10 +42,10 @@
       <cover-view>@{{publisher.nickname}}</cover-view>
 
       <cover-view>
-      <block wx:if="{{videoInfo.bgmName != null}}">
-        <cover-image class='size-me-bgm' src="../resource/images/music.png"></cover-image>
-        <cover-view>《{{video.bgmName}}》</cover-view>
-      </block>
+        <block wx:if="{{videoInfo.bgmName != null}}">
+          <cover-image class='size-me-bgm' src="../resource/images/music.png"></cover-image>
+          <cover-view>《{{video.bgmName}}》</cover-view>
+        </block>
       </cover-view>
 
       <cover-view class='video-desc'>{{video.videoDesc}}</cover-view>
@@ -49,19 +54,26 @@
 
     </cover-view>
 
-    <cover-view class='container-bottom'>
-      <!-- 首页按钮 -->
-      <cover-image class='' src='../resource/images/index.png' class="size-bottom" bindtap='showIndex'></cover-image>
+    <cover-view class="container-fixed">
+      <cover-view class='container-bottom'>
+        <!-- 首页按钮 -->
+        <cover-image class='' src='../resource/images/index.png' class="size-bottom" bindtap='showIndex'></cover-image>
 
-      <!-- 关注按钮 -->
-      <cover-image class='' src='../resource/images/follow.png' class="size-bottom" bindtap='showFollow'></cover-image>
+        <!-- 关注按钮 -->
+        <cover-image class='' src='../resource/images/follow.png' class="size-bottom" bindtap='showFollow'></cover-image>
 
 
-      <!-- 我的按钮 -->
-      <cover-image class='' src='../resource/images/mine.png' class="size-bottom" bindtap='showMine'></cover-image>
+        <!-- 我的按钮 -->
+        <cover-image class='' src='../resource/images/mine.png' class="size-bottom" bindtap='showMine'></cover-image>
 
+      </cover-view>
     </cover-view>
+
+
   </video>
+
+  <van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:cancel="onClose" bind:select="onSelect" />
 </view>
 
 <van-notify id="van-notify" />
+<van-toast id="van-toast" />

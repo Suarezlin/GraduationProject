@@ -1,5 +1,6 @@
 package com.suarezlin.controller;
 
+import com.suarezlin.pojo.UsersReport;
 import com.suarezlin.pojo.VO.UsersVO;
 import com.suarezlin.pojo.Users;
 import com.suarezlin.pojo.VO.PublisherVO;
@@ -179,6 +180,14 @@ public class UserController extends BasicController {
         }
 
         userService.deleteUserFanRelation(userId, fanId);
+        return CommonReturnType.ok();
+    }
+
+    @PostMapping("/report")
+    public CommonReturnType reportUser(@RequestBody UsersReport usersReport) {
+
+        //TODO: 完成举报接口功能
+
         return CommonReturnType.ok();
     }
 

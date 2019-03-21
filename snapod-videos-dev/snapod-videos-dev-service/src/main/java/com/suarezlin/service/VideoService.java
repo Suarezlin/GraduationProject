@@ -30,5 +30,13 @@ public interface VideoService {
 
     public void userNotLikeVideo(String userId, String videoId, String videoCreaterId);
 
+    public PagedResult getUserVideos(String publisherId, Integer page, Integer pageSize);
+
+    public PagedResult getUserLikeVideos(String userId, Integer page, Integer pageSize);
+
+    public PagedResult getUserFollowVideos(String userId, Integer page, Integer pageSize);
+
+    public void deleteVideo(String videoId);
+
 
 }

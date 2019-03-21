@@ -3,9 +3,11 @@ package com.suarezlin.service.impl;
 import com.suarezlin.mapper.UserLikeVideosMapper;
 import com.suarezlin.mapper.UsersFansMapper;
 import com.suarezlin.mapper.UsersMapper;
+import com.suarezlin.mapper.UsersReportMapper;
 import com.suarezlin.pojo.UserLikeVideos;
 import com.suarezlin.pojo.Users;
 import com.suarezlin.pojo.UsersFans;
+import com.suarezlin.pojo.UsersReport;
 import com.suarezlin.service.UserService;
 import com.suarezlin.utils.UUID;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +37,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UsersFansMapper usersFansMapper;
+
+    @Autowired
+    private UsersReportMapper usersReportMapper;
 
     @Autowired
     private Sid sid = null;
@@ -150,6 +155,11 @@ public class UserServiceImpl implements UserService {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void reportUser(UsersReport usersReport) {
+        usersReportMapper.insert(usersReport);
     }
 
 }

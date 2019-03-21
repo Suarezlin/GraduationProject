@@ -1,7 +1,7 @@
 //app.js
 App({
 
-  serverUrl: "http://192.168.31.46:8080",
+  serverUrl: "http://192.168.1.100:8080",
 
   userInfo: null,
 

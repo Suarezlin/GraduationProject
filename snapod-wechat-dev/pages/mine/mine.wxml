@@ -2,17 +2,17 @@
 
   <view class='container'>
 
-  <view style="position: absolute;background-repeat: no-repeat;background-size: 100% 100%;background-position: center;z-index: -1;height: 100%; width:100%; text-align: center;filter: blur(10px);">
-  <image src="{{faceUrl}}" mode='aspectFill' style="height: 100%; width:100%;"></image>
-  </view>
+    <view style="position: absolute;background-repeat: no-repeat;background-size: 100% 100%;background-position: center;z-index: -1;height: 100%; width:100%; text-align: center;filter: blur(10px);">
+      <image src="{{faceUrl}}" mode='aspectFill' style="height: 100%; width:100%;"></image>
+    </view>
 
     <block wx:if="{{isMe}}">
-    <view bindtap='changeFace'>
-      <image src="{{faceUrl}}" class="avatar" mode='aspectFill'></image>
-    </view>
+      <view bindtap='changeFace'>
+        <image src="{{faceUrl}}" class="avatar" mode='aspectFill'></image>
+      </view>
     </block>
     <block wx:if="{{!isMe}}">
-      <image src="{{faceUrl}}" class="face"></image>
+      <image src="{{faceUrl}}" class="avatar" mode='aspectFill'></image>
     </block>
     <label class='nickname'>{{nickname}}</label>
 
@@ -41,9 +41,9 @@
     </block>
 
     <view class='container-row'>
-      <van-tag custom-class="info-items" size="large" round type="danger"> {{fansCounts}} 粉丝 </van-tag>
-      <van-tag custom-class="info-items" size="large" round type="primary"> {{followCounts}} 关注 </van-tag>
-      <van-tag custom-class="info-items" size="large" round type="success"> {{receiveLikeCounts}} 获赞 </van-tag>
+      <van-tag custom-class="info-items" size="large" type="danger"> {{fansCounts}} 粉丝 </van-tag>
+      <van-tag custom-class="info-items" size="large" type="primary"> {{followCounts}} 关注 </van-tag>
+      <van-tag custom-class="info-items" size="large" type="success"> {{receiveLikeCounts}} 获赞 </van-tag>
       <!-- <label class='info-items'>{{fansCounts}} 粉丝</label>
       <label class='info-items'>{{followCounts}} 关注</label>
       <label class='info-items'>{{receiveLikeCounts}} 获赞</label> -->
@@ -65,20 +65,50 @@
 <view class='tabs'>
 
 
-  <van-tabs swipeable animated sticky scroll-top="{{ scrollTop }}" type="card">
+  <van-tabs animated sticky scroll-top="{{ scrollTop }}" active="{{ tabActive }}" bind:change="onTabChange" swipe-threshold="{{10}}">
     <van-tab title="作品">
-      <block wx:for="{{myVideoList}}">
-        <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image>
+
+
+      <block wx:for="{{showMyVideoList}}">
+
+        <van-swipe-cell wx:if="{{isMe}}" right-width="{{ 65 }}" async-close bind:close="onSwipeClose" data-arrindex="{{index}}">
+          <van-cell-group>
+          <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+            <view slot="icon">
+              <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+            </view>
+          </van-cell>
+          </van-cell-group>
+          
+          <view slot="right" class="van-swipe-cell__right">删除</view>
+        </van-swipe-cell>
+
+        <van-cell wx:if="{{!isMe}}" title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+            <view slot="icon">
+              <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+            </view>
+          </van-cell>
+        <!-- <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image> -->
       </block>
     </van-tab>
     <van-tab title="收藏">
-      <block wx:for="{{likeVideoList}}">
-        <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image>
+      <block wx:for="{{showLikeVideoList}}">
+        <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+          <view slot="icon">
+            <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+          </view>
+
+
+        </van-cell>
       </block>
     </van-tab>
     <van-tab title="关注">
-      <block wx:for="{{followVideoList}}">
-        <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image>
+      <block wx:for="{{showFollowVideoList}}">
+        <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+          <view slot="icon">
+            <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+          </view>
+        </van-cell>
       </block>
     </van-tab>
   </van-tabs>
@@ -103,3 +133,4 @@
   </view> -->
 </view>
 <van-notify id="van-notify" />
+<van-dialog id="van-dialog" />

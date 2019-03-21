@@ -1,6 +1,7 @@
 package com.suarezlin.service;
 
 import com.suarezlin.pojo.Users;
+import com.suarezlin.pojo.UsersReport;
 import org.apache.catalina.User;
 
 public interface UserService {
@@ -36,4 +37,5 @@ public interface UserService {
 
     public Boolean hasUserFollow(String userId, String fanId);
 
+    public void reportUser(UsersReport usersReport);
 }
