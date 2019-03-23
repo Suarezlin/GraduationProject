@@ -25,6 +25,6 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(miniInterceptor())
                 .addPathPatterns(new String[] { "/user/**", "/video/**"})
-                .excludePathPatterns(new String[] { "/video/list/", "/video/hot/", "/user/publisher/**", "/user/face", "/user/isLogin" });
+                .excludePathPatterns(new String[] { "/video/list/", "/video/hot/", "/user/publisher/**", "/user/face", "/user/isLogin", "/video/commnets/get" });
     }
 }

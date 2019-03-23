@@ -1,79 +1,120 @@
-<view style='width:100%;height:100%'>
-  <view class='full-screen'>
-  <van-icon name="expand" size="50rpx"  wx:if="{{hasFullScreen}}" bind:click="fullScreen" color="white"/>
-  </view>
-  <video id="myVideo" src="{{serverUrl}}{{video.videoPath}}" controls="{{false}}" autoplay='{{true}}' loop='{{true}}' style='width:100%;height:100%' object-fit="{{fit}}" show-mute-btn="{{true}}">
-    <cover-view class='container'>
+<view style='width:100%;height:100%;'>
+  <!-- <view class='full-screen'>
+    <van-icon name="expand" size="50rpx" wx:if="{{hasFullScreen}}" bind:click="fullScreen" color="white" />
+  </view> -->
+  <video id="myVideo" src="{{serverUrl}}{{video.videoPath}}" controls="{{false}}" autoplay='{{true}}' loop='{{true}}' object-fit="{{fit}}">
+  </video>
+
+
+  <view class='container-video'>
+    <view class='container'>
       <!-- 上传视频 -->
 
-      <cover-image src='../resource/images/camera.png' style='width:50rpx;height:50rpx;' bindtap='upload'></cover-image>
+      <image src='../resource/images/camera.png' style='width:50rpx;height:50rpx;' bindtap='upload'></image>
 
 
 
 
       <!-- 搜索按钮 -->
-      <cover-image src='../resource/images/search.png' style='width:45rpx;height:45rpx;' bindtap='showSearch'></cover-image>
-    </cover-view>
+      <image src='../resource/images/search.png' style='width:45rpx;height:45rpx;' bindtap='showSearch'></image>
+    </view>
 
-    <cover-view class='container-me'>
-      <!-- 头像 -->
-      <cover-image class="face" src='{{serverUrl}}{{publisher.faceImage}}' bindtap='showPublisher' mode="aspectFill"></cover-image>
-
-
-      <!-- 喜欢收藏按钮 -->
-      <block wx:if="{{userLikeVideo}}">
-        <cover-image class="size-me" src='../resource/images/like.png' style='margin-top:30rpx;' bindtap='likeVideoOrNot'></cover-image>
-      </block>
-      <block wx:else>
-        <cover-image class="size-me" src='../resource/images/unlike.png' style='margin-top:30rpx;' bindtap='likeVideoOrNot'></cover-image>
-      </block>
+    <view>
+      <view class='container-me'>
+        <!-- 头像 -->
+        <image class="face" src='{{serverUrl}}{{publisher.faceImage}}' bindtap='showPublisher' mode="aspectFill"></image>
 
 
-      <!-- 评论按钮 -->
-      <cover-image class="size-me" src='../resource/images/comments.png' style='margin-top:30rpx;' bindtap='leaveComment'></cover-image>
-
-      <!-- 分享按钮 -->
-      <cover-image class="size-me" src='../resource/images/share.png' style='margin-top:30rpx;' bindtap='shareMe'></cover-image>
-
-    </cover-view>
-
-    <cover-view class='container-words'>
-
-      <cover-view>@{{publisher.nickname}}</cover-view>
-
-      <cover-view>
-        <block wx:if="{{videoInfo.bgmName != null}}">
-          <cover-image class='size-me-bgm' src="../resource/images/music.png"></cover-image>
-          <cover-view>《{{video.bgmName}}》</cover-view>
+        <!-- 喜欢收藏按钮 -->
+        <block wx:if="{{userLikeVideo}}">
+          <image class="size-me" src='../resource/images/like.png' style='margin-top:30rpx;' bindtap='likeVideoOrNot'></image>
         </block>
-      </cover-view>
-
-      <cover-view class='video-desc'>{{video.videoDesc}}</cover-view>
-
-
-
-    </cover-view>
-
-    <cover-view class="container-fixed">
-      <cover-view class='container-bottom'>
-        <!-- 首页按钮 -->
-        <cover-image class='' src='../resource/images/index.png' class="size-bottom" bindtap='showIndex'></cover-image>
-
-        <!-- 关注按钮 -->
-        <cover-image class='' src='../resource/images/follow.png' class="size-bottom" bindtap='showFollow'></cover-image>
+        <block wx:else>
+          <image class="size-me" src='../resource/images/unlike.png' style='margin-top:30rpx;' bindtap='likeVideoOrNot'></image>
+        </block>
 
 
-        <!-- 我的按钮 -->
-        <cover-image class='' src='../resource/images/mine.png' class="size-bottom" bindtap='showMine'></cover-image>
+        <!-- 评论按钮 -->
+        <image class="size-me" src='../resource/images/comments.png' style='margin-top:30rpx;' bindtap='leaveComment'></image>
 
-      </cover-view>
-    </cover-view>
+        <!-- 分享按钮 -->
+        <image class="size-me" src='../resource/images/share.png' style='margin-top:30rpx;' bindtap='shareMe'></image>
+
+      </view>
+
+      <view class='container-words'>
+
+        <view>@{{publisher.nickname}}</view>
+
+        <view>
+          <block wx:if="{{videoInfo.bgmName != null}}">
+            <image class='size-me-bgm' src="../resource/images/music.png"></image>
+            <view>《{{video.bgmName}}》</view>
+          </block>
+        </view>
+
+        <view class='video-desc'>{{video.videoDesc}}</view>
 
 
-  </video>
 
-  <van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:cancel="onClose" bind:select="onSelect" />
+      </view>
+
+    </view>
+
+
+
+
+    <view class='container-bottom'>
+      <!-- 首页按钮 -->
+      <image class='' src='../resource/images/index.png' class="size-bottom" bindtap='showIndex'></image>
+
+      <!-- 关注按钮 -->
+      <image class='' src='../resource/images/follow.png' class="size-bottom" bindtap='showFollow'></image>
+
+
+      <!-- 我的按钮 -->
+      <image class='' src='../resource/images/mine.png' class="size-bottom" bindtap='showMine'></image>
+
+    </view>
+  </view>
+
+  <van-action-sheet show="{{ show }}" actions="{{ actions }}" cancel-text="取消" bind:cancel="onClose" bind:select="onSelect" overlay="{{ true }}" close-on-click-overlay="{{true}}" z-index="{{999}}" />
+
 </view>
+
+
+<van-popup show="{{ commentsShow }}" position="bottom" overlay="{{ true }}" close-on-click-overlay="{{true}}" bind:close="onCommentsClose" custom-style="height:60%; overflow: hidden;">
+
+  <van-cell-group style="height:10%;">
+    <van-field value="{{content}}" center clearable label="{{commentType}}" placeholder="{{placeholder}}" border="{{ false }}" use-button-slot focus="{{commentFocus}}" title-width="{{titleSize}}" bind:change="onInputChange">
+      <van-button slot="button" size="small" type="primary" bind:click="onSubmit">提交</van-button>
+    </van-field>
+  </van-cell-group>
+
+  <view style='height:90%; overflow: scroll'>
+
+    <block wx:for="{{commentsList}}">
+      <view class='comments-all' bindtap='replyFocus' data-fatherCommentId='{{item.id}}' data-toUserId='{{item.fromUserId}}' data-toNickname='{{item.nickname}}'>
+
+
+        <van-cell wx:if="{{item.toNickname != null}}" title="{{item.nickname}} 回复 @{{item.toNickname}}" label="{{item.comment}}" border="{{ true }}" value="{{item.createTime}}" label-class="comments-content">
+          <view slot="icon">
+            <image class='face-comments' src="{{serverUrl}}{{item.faceImage}}" mode='aspectFill'></image>
+          </view>
+        </van-cell>
+        <van-cell wx:if="{{item.toNickname == null}}" title="{{item.nickname}}" label="{{item.comment}}" border="{{ true }}" value="{{item.createTime}}" label-class="comments-content">
+          <view slot="icon">
+            <image class='face-comments' src="{{serverUrl}}{{item.faceImage}}" mode='aspectFill'></image>
+          </view>
+        </van-cell>
+      </view>
+    </block>
+    <van-button wx:if="{{commentsPage < commentsTotalPage}}" size="large" type="primary" bind:click="getMore" loading="{{loading}}">加载更多</van-button>
+  </view>
+
+
+</van-popup>
+
 
 <van-notify id="van-notify" />
 <van-toast id="van-toast" />

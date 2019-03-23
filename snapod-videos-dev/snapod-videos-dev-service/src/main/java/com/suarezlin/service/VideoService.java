@@ -1,6 +1,8 @@
 package com.suarezlin.service;
 
 
+import com.suarezlin.pojo.Comments;
+import com.suarezlin.pojo.VO.CommentsVO;
 import com.suarezlin.pojo.Videos;
 import com.suarezlin.utils.PagedResult;
 
@@ -36,7 +38,15 @@ public interface VideoService {
 
     public PagedResult getUserFollowVideos(String userId, Integer page, Integer pageSize);
 
+    public PagedResult getVideoComments(String videoId, Integer page, Integer pageSize);
+
     public void deleteVideo(String videoId);
+
+    public void addComment(Comments comment);
+
+    public void deleteComment(String commentId);
+
+    //public List<CommentsVO> getComments(String videoId);
 
 
 }

@@ -3,11 +3,9 @@ package com.suarezlin.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.suarezlin.mapper.*;
-import com.suarezlin.pojo.SearchRecords;
-import com.suarezlin.pojo.UserLikeVideos;
-import com.suarezlin.pojo.Users;
+import com.suarezlin.pojo.*;
+import com.suarezlin.pojo.VO.CommentsVO;
 import com.suarezlin.pojo.VO.VideosVO;
-import com.suarezlin.pojo.Videos;
 import com.suarezlin.service.UserService;
 import com.suarezlin.service.VideoService;
 import com.suarezlin.utils.PagedResult;
@@ -16,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +33,9 @@ public class VideoServiceImpl implements VideoService {
 
     @Autowired
     private UserLikeVideosMapper userLikeVideosMapper;
+
+    @Autowired
+    private CommentsMapper commentsMapper;
 
     @Autowired
     private UsersMapper usersMapper;
@@ -181,6 +184,22 @@ public class VideoServiceImpl implements VideoService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public PagedResult getVideoComments(String videoId, Integer page, Integer pageSize) {
+        PageHelper.startPage(page, pageSize);
+        List<CommentsVO> comments = commentsMapper.getComments(videoId);
+
+        PageInfo<CommentsVO> pageInfo = new PageInfo<>(comments);
+
+        PagedResult result = new PagedResult();
+        result.setPage(page);
+        result.setRows(comments);
+        result.setTotal(pageInfo.getPages());
+        result.setRecords(pageInfo.getTotal());
+        return result;
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public void deleteVideo(String videoId) {
         List<Users> users = videosMapperCustom.getVideoLiker(videoId);
@@ -193,4 +212,29 @@ public class VideoServiceImpl implements VideoService {
         // TODO: 删除视频所有评论
         videosMapperCustom.deleteVideo(videoId);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void addComment(Comments comment) {
+        String id = UUID.generateUUID();
+        comment.setId(id);
+        comment.setCreateTime(new Date());
+        commentsMapper.insert(comment);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void deleteComment(String commentId) {
+        Example example = new Example(Comments.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("id", commentId);
+        commentsMapper.deleteByExample(criteria);
+    }
+
+//    @Override
+//    @Transactional(propagation = Propagation.SUPPORTS)
+//    public List<CommentsVO> getComments(String videoId) {
+//        List<CommentsVO> comments = commentsMapper.getCommentsByVideoId(videoId);
+//        return comments;
+//    }
 }

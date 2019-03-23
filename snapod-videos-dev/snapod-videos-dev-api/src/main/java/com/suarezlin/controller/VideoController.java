@@ -2,6 +2,7 @@ package com.suarezlin.controller;
 
 import com.suarezlin.VO.UsersVO;
 import com.suarezlin.pojo.Bgm;
+import com.suarezlin.pojo.Comments;
 import com.suarezlin.pojo.Users;
 import com.suarezlin.pojo.VO.VideosVO;
 import com.suarezlin.pojo.Videos;
@@ -265,6 +266,21 @@ public class VideoController {
             return CommonReturnType.errorMsg("删除失败");
         }
         return CommonReturnType.ok();
+    }
+
+    @PostMapping("/comments/add")
+    public CommonReturnType addComments(@RequestBody Comments comment) {
+        videoService.addComment(comment);
+        return CommonReturnType.ok();
+    }
+
+    @GetMapping("/comments/get")
+    public CommonReturnType getComments(String videoId, Integer page, Integer pageSize) {
+        if (StringUtils.isBlank(videoId) || StringUtils.isEmpty(videoId)) {
+            return CommonReturnType.errorMsg("视频 Id 不能为空");
+        }
+        PagedResult pagedResult = videoService.getVideoComments(videoId, page, pageSize);
+        return CommonReturnType.ok(pagedResult);
     }
 
 }

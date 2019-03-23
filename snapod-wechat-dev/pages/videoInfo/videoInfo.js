@@ -19,6 +19,7 @@ Page({
     userLikeVideo: false,
     publisher: {},
     show: false,
+    loading: false,
     actions: [{
         name: "下载到本地"
       },
@@ -32,7 +33,17 @@ Page({
       {
         name: "分享到朋友圈"
       },
-    ]
+    ],
+    commentsPage: 1,
+    commentsTotalPage: 1,
+    commentsList: [],
+    titleSize: "40px",
+
+
+    placeholder: "说点什么...",
+
+    content: "",
+    commentType: "评论"
   },
 
   videoContext: {},
@@ -293,5 +304,176 @@ Page({
   fullScreen: function() {
     console.log("full");
     this.videoContext.requestFullScreen();
-  }
+  },
+
+  leaveComment: function() {
+    this.videoContext.pause();
+    this.setData({
+      commentsShow: true,
+      commentFocus: true
+    });
+    this.getCommentsList(1);
+  },
+
+  onCommentsClose: function() {
+    this.videoContext.play();
+    this.setData({
+      commentsShow: false,
+      content: "",
+      commentType: "评论",
+      replyFatherCommentId: null,
+      replyToUserId: null,
+      commentFocus: false,
+      titleSize: "40px"
+    });
+  },
+
+  replyFocus: function (e) {
+    var fatherCommentId = e.currentTarget.dataset.fathercommentid;
+    var toUserId = e.currentTarget.dataset.touserid;
+    var toNickname = e.currentTarget.dataset.tonickname;
+
+    this.setData({
+      commentType: "回复 " + toNickname,
+      replyFatherCommentId: fatherCommentId,
+      replyToUserId: toUserId,
+      commentFocus: true,
+      titleSize: "80px"
+    });
+  },
+
+  onSubmit: function (e) {
+    const me = this;
+    let content = me.data.content
+
+    // 获取评论回复的fatherCommentId和toUserId
+    let fatherCommentId = me.data.replyFatherCommentId;
+    let toUserId = me.data.replyToUserId;
+    const user = app.getGlobalUserInfo();
+    let video = me.data.video;
+    let realUrl = "/pages/mine/mine#publisherId@" + video.userId;
+
+    if (user == null || user == undefined || user == '') {
+      wx.navigateTo({
+        url: '../userLogin/login?redirectUrl=' + realUrl,
+      })
+    } else {
+      wx.showLoading({
+        title: '请稍后...',
+      })
+      wx.request({
+        url: app.serverUrl + '/video/comments/add',
+        method: 'POST',
+        header: {
+          'content-type': 'application/json', // 默认值
+          'userId': user.id,
+          'userToken': user.userToken
+        },
+        data: {
+          fatherCommentId: fatherCommentId,
+          toUserId: toUserId,
+          fromUserId: user.id,
+          videoId: me.data.video.id,
+          comment: content
+        },
+        success: function (res) {
+          console.log(res.data)
+          wx.hideLoading();
+          me.setData({
+            contentValue: "",
+            commentsList: [],
+            placeholder: "",
+            replyFatherCommentId: "",
+            replyToUserId: "",
+            commentFocus: false
+          });
+
+
+          me.getCommentsList(1);
+        }
+      });
+    }
+  },
+
+  getCommentsList: function (page) {
+    const me = this;
+
+    let videoId = me.data.video.id;
+
+    if (page == 1) {
+      me.setData({
+        commentsList: [],
+      });
+    }
+
+    wx.request({
+      url: app.serverUrl + '/video/comments/get?videoId=' + videoId + "&page=" + page + "&pageSize=5",
+      method: "GET",
+      success: function (res) {
+        console.log(res.data);
+
+        var commentsList = res.data.data.rows;
+        var newCommentsList = me.data.commentsList;
+        commentsList.forEach((value) => {
+
+          let time = value.createTime.replace(/-/g, '/').replace("T", " ");
+          time = time.slice(0, time.indexOf("."));
+          console.log(time);
+          //value.createTime = me.format(new Date(value.createTime), "yyyy-MM-dd")
+          value.createTime = videoUtil.formatTime(new Date(time))
+        });
+        newCommentsList = newCommentsList.concat(commentsList)
+        me.setData({
+          commentsList: newCommentsList,
+          commentsPage: page,
+          commentsTotalPage: res.data.data.total,
+          loading: false
+        });
+      }
+    })
+  },
+  format: function (date ,fmt) {
+    var o = {
+      "M+": date.getMonth() + 1,                 //月份 
+      "d+": date.getDate(),                    //日 
+      "h+": date.getHours(),                   //小时 
+      "m+": date.getMinutes(),                 //分 
+      "s+": date.getSeconds(),                 //秒 
+      "q+": Math.floor((date.getMonth() + 3) / 3), //季度 
+      "S": date.getMilliseconds()             //毫秒 
+    };
+    if (/(y+)/.test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+      if (new RegExp("(" + k + ")").test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+      }
+    }
+    return fmt;
+  },
+
+  getMore: function () {
+    //console.log("到底了");
+    const me = this;
+    var currentPage = me.data.commentsPage;
+    var totalPage = me.data.commentsTotalPage;
+    if (currentPage === totalPage) {
+      return;
+    }
+    var page = currentPage + 1;
+
+    me.setData({
+      loading: true
+    });
+
+    me.getCommentsList(page);
+  },
+
+
+  onInputChange: function(e) {
+    this.setData({
+      content: e.detail
+    });
+  }      
 })

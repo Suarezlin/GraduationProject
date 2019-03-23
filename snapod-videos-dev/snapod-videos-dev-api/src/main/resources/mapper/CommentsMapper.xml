@@ -13,4 +13,29 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
   </resultMap>
+
+  <resultMap id="CommentsVOMap" type="com.suarezlin.pojo.VO.CommentsVO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="father_comment_id" jdbcType="VARCHAR" property="fatherCommentId" />
+    <result column="to_user_id" jdbcType="VARCHAR" property="toUserId" />
+    <result column="video_id" jdbcType="VARCHAR" property="videoId" />
+    <result column="from_user_id" jdbcType="VARCHAR" property="fromUserId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="face_image" jdbcType="VARCHAR" property="faceImage" />
+    <result column="to_nickname" jdbcType="VARCHAR" property="toNickname" />
+  </resultMap>
+
+  <select id="getComments" parameterType="string" resultMap="CommentsVOMap">
+    select c.*, u.nickname, u.face_image, r.nickname as to_nickname
+    from comments as c
+    left join users as u on c.from_user_id=u.id
+    left join users as r on c.to_user_id=r.id
+    where c.video_id=#{videoId}
+    order by c.create_time desc
+  </select>
 </mapper>
