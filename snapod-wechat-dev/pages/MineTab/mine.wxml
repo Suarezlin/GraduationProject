@@ -1,0 +1,145 @@
+<view>
+
+  <view class='container'>
+
+    <view style="position: absolute;background-repeat: no-repeat;background-size: 100% 100%;background-position: center;z-index: -1;height: 100%; width:100%; text-align: center;filter: blur(10px);">
+      <image src="{{faceUrl}}" mode='aspectFill' style="height: 100%; width:100%;"></image>
+    </view>
+
+    <block wx:if="{{isMe}}">
+      <view bindtap='changeFace'>
+        <image src="{{faceUrl}}" class="avatar" mode='aspectFill'></image>
+      </view>
+    </block>
+    <block wx:if="{{!isMe}}">
+      <image src="{{faceUrl}}" class="avatar" mode='aspectFill'></image>
+    </block>
+    <label class='nickname'>{{nickname}}</label>
+
+    <block wx:if="{{isMe}}">
+      <view class='buttonGroup'>
+        <van-button size='small' type="default" custom-class='button' bind:click="uploadVideo">上传作品</van-button>
+        <van-button size='small' type="danger" custom-class='button' bind:click="logout">注销</van-button>
+      </view>
+      <!-- <button size='mini' class='primary' bindtap='uploadVideo'> 上传作品</button>
+      <button size='mini' type='' class='logout' bindtap='logout'>注销</button> -->
+    </block>
+    <block wx:if="{{!isMe}}">
+      <block wx:if="{{isFollow}}">
+        <view class='buttonGroup'>
+          <van-button size='small' type="danger" custom-class='button' bind:click="followMe">已关注</van-button>
+        </view>
+        <!-- <button size='mini' type='' class='follow' data-followType='0' bindtap='followMe'>已关注</button> -->
+      </block>
+      <block wx:if="{{!isFollow}}">
+        <view class='buttonGroup'>
+          <van-button size='small' type="primary" custom-class='button' bind:click="followMe">关注我</van-button>
+        </view>
+        <!-- <button size='mini' type='primary' class='follow' data-followType='1' bindtap='followMe'>关注我</button> -->
+      </block>
+
+    </block>
+
+    <view class='container-row'>
+      <van-tag custom-class="info-items" size="large" type="danger"> {{fansCounts}} 粉丝 </van-tag>
+      <van-tag custom-class="info-items" size="large" type="primary"> {{followCounts}} 关注 </van-tag>
+      <van-tag custom-class="info-items" size="large" type="success"> {{receiveLikeCounts}} 获赞 </van-tag>
+      <!-- <label class='info-items'>{{fansCounts}} 粉丝</label>
+      <label class='info-items'>{{followCounts}} 关注</label>
+      <label class='info-items'>{{receiveLikeCounts}} 获赞</label> -->
+    </view>
+  </view>
+
+</view>
+
+
+<!-- <view class='container-video'>
+  
+  <view class='{{videoSelClass}} {{isSelectedWork}}' bindtap='doSelectWork'>作品</view>
+  
+  <view class='{{videoSelClass}} {{isSelectedLike}}' bindtap='doSelectLike'>收藏</view>
+  
+  <view class='{{videoSelClass}} {{isSelectedFollow}}' bindtap='doSelectFollow'>关注</view>
+</view> -->
+
+<view class='tabs'>
+
+
+  <van-tabs animated sticky scroll-top="{{ scrollTop }}" active="{{ tabActive }}" bind:change="onTabChange" swipe-threshold="{{10}}">
+    <van-tab title="作品">
+
+
+      <block wx:for="{{showMyVideoList}}">
+
+        <van-swipe-cell wx:if="{{isMe}}" right-width="{{ 65 }}" async-close bind:close="onSwipeClose" data-arrindex="{{index}}">
+          <van-cell-group>
+          <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+            <view slot="icon">
+              <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+            </view>
+          </van-cell>
+          </van-cell-group>
+          
+          <view slot="right" class="van-swipe-cell__right">删除</view>
+        </van-swipe-cell>
+
+        <van-cell wx:if="{{!isMe}}" title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+            <view slot="icon">
+              <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+            </view>
+          </van-cell>
+        <!-- <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image> -->
+      </block>
+    </van-tab>
+    <van-tab title="收藏">
+      <block wx:for="{{showLikeVideoList}}">
+        <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+          <view slot="icon">
+            <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+          </view>
+
+
+        </van-cell>
+      </block>
+    </van-tab>
+    <van-tab title="关注">
+      <block wx:for="{{showFollowVideoList}}">
+        <van-cell title="{{item.videoDesc}}" label="{{item.nickName}}" value="{{item.likeCounts}} 人喜欢" border="{{ true }}" value-class="value-like" data-arrindex="{{index}}" bind:click="showVideo">
+          <view slot="icon">
+            <image style="height: 60px; width:60px; padding-right:10px" src="{{serverUrl}}{{item.coverPath}}" mode='aspectFill'></image>
+          </view>
+        </van-cell>
+      </block>
+    </van-tab>
+  </van-tabs>
+
+
+  <!-- <view hidden='{{myWorkFalg}}'>
+    <block wx:for="{{myVideoList}}">
+      <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image>
+    </block>
+  </view>
+
+  <view hidden='{{myLikesFalg}}'>
+    <block wx:for="{{likeVideoList}}">
+      <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image>
+    </block>
+  </view>
+
+  <view hidden='{{myFollowFalg}}'>
+    <block wx:for="{{followVideoList}}">
+      <image src='{{serverUrl}}{{item.coverPath}}' class='videoImage' mode="aspectFill" bindtap='showVideo' data-arrindex='{{index}}'></image>
+    </block>
+  </view> -->
+</view>
+
+<van-tabbar active="{{ active }}" bind:change="onChange" fixed>
+  <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+  <van-tabbar-item icon="search">搜索</van-tabbar-item>
+  <van-tabbar-item icon="plus">发布视频</van-tabbar-item>
+  <van-tabbar-item icon="star-o">关注</van-tabbar-item>
+  <van-tabbar-item icon="user-o">我</van-tabbar-item>
+</van-tabbar>
+
+<van-notify id="van-notify" />
+<van-dialog id="van-dialog" />

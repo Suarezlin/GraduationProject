@@ -1,5 +1,5 @@
 
-function uploadVideo() {
+function uploadVideo(that) {
   wx.chooseVideo({
     sourceType: ['album', 'camera'],
     maxDuration: 60,
@@ -26,6 +26,11 @@ function uploadVideo() {
           url: `/pages/chooseBgm/chooseBgm?duration=${duration}&height=${height}&size=${size}&tempFilePath=${tempFilePath}&thumbTempFilePath=${thumbTempFilePath}&width=${width}`,
         })
       }
+    },
+    fail() {
+      that.setData({
+        active: that.data.current
+      });
     }
   });
 };

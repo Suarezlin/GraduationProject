@@ -19,6 +19,7 @@ Page({
       icon: "star-o"
     },
     active: 0,
+    current: 0,
     likeNum: 100,
     screenWidth: 0,
     videoList: [],
@@ -172,39 +173,52 @@ Page({
   },
 
   onChange(event) {
-    console.log(event.detail);
+    //console.log(event.detail);
     let user = app.getGlobalUserInfo();
     let realUrl;
+    const that = this;
+    let current = that.data.current;
+    console.log(current);
 
     switch(event.detail) {
       case 0:
         wx.redirectTo({
           url: '/pages/index/index',
         });
+        that.setData({
+          current: 0
+        });
         break;
       case 1:
-        wx.redirectTo({
+        wx.navigateTo({
           url: '/pages/search/search',
+        });
+        that.setData({
+          current: 1
         });
         break;
       case 2:
 
-        realUrl = "/pages/index/index"
+        realUrl = "/pages/index/index";
 
         if (user == null || user == undefined || user == "") {
           wx.redirectTo({
             url: '/pages/userLogin/login?redirectUrl=' + realUrl,
           });
         } else {
+
           videoUtil.uploadVideo();
         }
         break;
       case 3:
         //TODO: 实现跳转到 关注页面
+        that.setData({
+          current: 3
+        });
         break;
       case 4:
 
-        realUrl = "/pages/index/index"
+        realUrl = "/pages/MineTab/mine"
 
         if (user == null || user == undefined || user == "") {
           wx.redirectTo({
@@ -212,11 +226,18 @@ Page({
           });
         } else {
           wx.redirectTo({
-            url: '/pages/tabmine/mine',
+            url: '/pages/MineTab/mine',
           })
         }
+        that.setData({
+          current: 4
+        });
         break;
     }
+
+    that.setData({
+      active: current
+    });
   }
   
 })

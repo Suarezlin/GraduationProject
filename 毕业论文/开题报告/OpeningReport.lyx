@@ -1,0 +1,419 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{xeCJK}sepackage[backend=biber,style=gb7714-2015]{biblatex}
+\usepackage{indentfirst}
+
+
+
+
+[location=local]{openning.bib}
+
+
+
+\author{林子牛}
+\title{毕业设计开题报告}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package none
+\inputencoding auto
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts true
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 1
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation 2em
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle headings
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+maketitle
+\end_layout
+
+\end_inset
+
+ 
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+题目选定
+\end_layout
+
+\begin_layout Standard
+本次毕业设计的题目为: 基于微信小程序及 
+\emph on
+SpringBoot
+\emph default
+ 的短视频应用开发。近年来随着诸如 4G、高速宽带网络以及智能手机技术的飞速进步。人们的休闲娱乐重心逐渐从文字与图片相关内容转移到了短视频与直播应用上。市场上也
+涌现出了一系列的短视频应用软件。本毕业设计课题将完成短视频应用开发的整个流程。
+\end_layout
+
+\begin_layout Standard
+目前短视频应用已经成为互联网产业链中一个重要的流量入口。著名短视频应用抖音在各大手机应用市场中获得了累计 74.61 亿次下载，在 
+\emph on
+App Store
+\emph default
+ 摄影与录像应用分类中排行第一。截止 2018 年 12 月，在线视频行业月独立设备数达10.17亿，同比增长1.7%，其中短视频行业月独立设备数达7.34亿台，同比
+增长率为58.7% 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "2019"
+literal "false"
+
+\end_inset
+
+。在智能手机已经普及的今天，短视频相关应用已经爆发出了强大的活力，具有相当高的市场价值。所以进行短视频应用开发对于我们认识短时频应用相关技术以及商业模式具有非常
+大的帮助作用。
+\end_layout
+
+\begin_layout Standard
+本设计中，短视频应用软件主要分为两个部分: 前端部分与后端部分。前端部分主要负责与用户的交互。后端部分负责应用程序逻辑功能的实现。本设计要求前端使用微信小程序实
+现，后端搭建于 
+\emph on
+SpringBoot
+\emph default
+ 技术。
+\end_layout
+
+\begin_layout Standard
+
+\backslash
+mbox{aaa}
+\end_layout
+
+\begin_layout Section
+文献综述
+\end_layout
+
+\begin_layout Standard
+本设计使用 
+\emph on
+Java
+\emph default
+ 语言以及 
+\emph on
+SpringBoot
+\emph default
+ 框架开发应用后端，使用以微信小程序为代表的混合应用开发框架构建应用前端。
+\end_layout
+
+\begin_layout Standard
+为了研究服务端应用开发演进过程以及其中每个阶段的突出问题与后续解决以方便本次的设计开发，我研读了十几篇相关论文与著作，了解了 J2EE 开发的各个阶段以及开发流
+程。 
+\end_layout
+
+\begin_layout Subsection
+Java Web 开发的发展
+\end_layout
+
+\begin_layout Standard
+Java 服务端开发可分为如下几个阶段:
+\end_layout
+
+\begin_layout Itemize
+applet 阶段: 此阶段严格意义上说不在 J2EE 发展阶段之内。applet 即运行在网络浏览器中的 Java。由于 applet 可能具有的安全漏洞以及
+使用起来过于麻烦，现在几乎不再将 applet 用于 web 开发之中
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Horstmann2016"
+literal "false"
+
+\end_inset
+
+。 
+\end_layout
+
+\begin_layout Itemize
+servlet 阶段: Servlet 就是一个运行在 J2EE 容器中的 Java 程序，Servlet 接收前端发送过来的请求，待其处理完成后，返回一个由
+ HTML 组成的响应
+\begin_inset CommandInset citation
+LatexCommand cite
+key "java8"
+literal "false"
+
+\end_inset
+
+。它的缺点是只能在 Servlet 内部拼接 HTML， 非常不方便。 
+\end_layout
+
+\begin_layout Itemize
+Servlet 和 Jsp 阶段: 为了克服 Servlet 的缺点，开发者们引入了 Jsp 技术，即把 Java 代码嵌入 HTML 中
+\begin_inset CommandInset citation
+LatexCommand cite
+key "java8"
+literal "false"
+
+\end_inset
+
+，用户使用时由 J2EE 容器解析 Jsp，大大提高了开发效率。但仍存在前端与后端开发混乱的问题。 
+\end_layout
+
+\begin_layout Itemize
+MVC 阶段: MVC
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Model, View, Controller
+\end_layout
+
+\end_inset
+
+ 将应用整体分为三个部分: 模型，视图与控制。模型负责处理业务逻辑，视图负责将结果展现给用户，控制负责接收并处理请求，是模型与视图之间的桥梁。MVC
+ 结构将前端与后端分离开来，减少了系统的耦合性
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Warin2017"
+literal "false"
+
+\end_inset
+
+。 
+\end_layout
+
+\begin_layout Subsection
+Java Web 开发的框架阶段
+\end_layout
+
+\begin_layout Standard
+在 J2EE 开发进入 MVC 阶段后，web 开发又产生了许多新的需求，如: 提高开发效率、增强系统稳定性、进一步降低耦合性以及实现分布式开发等。为此，产生了
+ SUN 公司大力支持的 EJB
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Enterprise JavaBeans
+\end_layout
+
+\end_inset
+
+ 和开源社区驱动的诸多开发框架。 
+\end_layout
+
+\begin_layout Itemize
+EJB: EJB 将服务端组件与分布式对象技术、Web Service、进程间异步通信以及对象的持久化管理结合了起来
+\begin_inset CommandInset citation
+LatexCommand cite
+key "BillBurke2007"
+literal "false"
+
+\end_inset
+
+。EJB 提高了企业级应用的开发效率，为实现应用的分布式提供了方便的环境并且极大地改变了人们对于企业及应用的思维方式。然而，EJB 也有许多的缺点，如:
+ 框架体量过重，在编写比较小的服务时，开发的复杂性与业务逻辑的复杂性不成正比以及 EJB 中一些设计已经有些过时等。EJB 并没有很好的降低开发地复杂度并且
+ EJB 中的持久化方案 Entity Beans 作为一种持久化方式是比较失败的
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Johnson2004"
+literal "false"
+
+\end_inset
+
+。 
+\end_layout
+
+\begin_layout Itemize
+Spring Framework: 为了解决上述 EJB 的一些缺陷，开发者们提出了一些新的技术，如：控制反转
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Inversion of Controll(IoC)
+\end_layout
+
+\end_inset
+
+、面向切面编程
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Aspect Oriented Programing(AOP)
+\end_layout
+
+\end_inset
+
+等。并且提出了一种轻量化的新型架构来取代 EJB。Spring 框架是一个轻量级开源框架，它通过依赖注入
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Dependency Injection
+\end_layout
+
+\end_inset
+
+来实现控制反转，并且使用面向切面编程来解决企业级应用中经常遇见的问题。Spring 框架实现了轻量级编程、系统的松耦合减少了样板式代码提高了开发效率
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Walls2016"
+literal "false"
+
+\end_inset
+
+，因此此次设计采用 Spring 框架进行开发。 
+\end_layout
+
+\begin_layout Subsection
+Spring 框架简介
+\end_layout
+
+\begin_layout Standard
+Spring 向用户提供的功能都依赖于它的两个核心特性—控制反转容器与面向切面编程框架。 
+\end_layout
+
+\begin_layout Subsubsection
+控制反转容器
+\end_layout
+
+\begin_layout Standard
+控制反转来自于设计模式中的依赖倒置原则。所谓依赖倒置原则即一种特定的解耦模式，它使高层级的模块不直接依赖于低层级的模块，而是两者同时依赖于某个接口
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Gamma2007"
+literal "false"
+
+\end_inset
+
+。
+\end_layout
+
+\begin_layout Standard
+依赖注入是控制反转的一种实现方式，Spring 框架使用依赖注入来实现控制反转。Spring IoC 容器就是对依赖注入的具体实现。当应用中需要使用一个对象的实
+例时不需要该应用自己创建该实例，而是向 IoC 容器申请一个实例。实例的创建以及生命周期均由容器进行控制。此时，高层次模块与低层次模块均依赖于抽象，实现了模块之
+间的低耦合
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Spring2018"
+literal "false"
+
+\end_inset
+
+。在 Spring 框架中，用户首先在配置文件
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+xml 配置或 Java 注解
+\end_layout
+
+\end_inset
+
+中将需要使用到的对象注册为 bean，随后 IoC 容器便可以自动将 bean 注入到使用实例的地方。
+\end_layout
+
+\begin_layout Standard
+本应用后端采用基于 
+\emph on
+J2EE
+\emph default
+ 的 
+\emph on
+Spring Framework
+\emph default
+ 技术。
+\emph on
+J2EE
+\emph default
+ 是 Java 服务端开发的基础。J2EE 技术通常采用层次化的体系结构以降低系统耦合。所谓层次化即将整个系统按功能划分为不同的层次，高级的层次可以条用低级层次
+中提供的功能，且这种调用是单向的。层次结构不仅增强了整个系统的稳定性，同时也为系统实现分布式功能打下了基础
+\begin_inset CommandInset citation
+LatexCommand cite
+key "基于J2EE的分布式系统开发的关键技术"
+literal "false"
+
+\end_inset
+
+。
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+biblatexopts "heading=bibliography,title=参考文献"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

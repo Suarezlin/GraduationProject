@@ -38,6 +38,9 @@ public class VideoController {
     @Value("${com.suarezlin.ffmpegPath}")
     private String ffmpegPath;
 
+    @Value("${com.suarezlin.ffprobePath}")
+    private String ffprobePath;
+
     @Autowired
     private VideoService videoService;
 

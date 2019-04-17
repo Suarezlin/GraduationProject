@@ -6,7 +6,9 @@
     "pages/mine/mine",
     "pages/userRegist/regist",
     "pages/chooseBgm/chooseBgm",
-    "pages/search/search"
+    "pages/search/search",
+    "pages/CloudTest/CloudTest",
+    "pages/MineTab/mine"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -69,5 +71,6 @@
   "networkTimeout": {
     "request": 200000,
     "uploadFile": 200000
-  }
+  },
+  "cloud": true
 }

@@ -346,6 +346,10 @@ Page({
     const me = this;
     let content = me.data.content
 
+    me.setData({
+      content: ""
+    });
+
     // 获取评论回复的fatherCommentId和toUserId
     let fatherCommentId = me.data.replyFatherCommentId;
     let toUserId = me.data.replyToUserId;
@@ -418,7 +422,6 @@ Page({
 
           let time = value.createTime.replace(/-/g, '/').replace("T", " ");
           time = time.slice(0, time.indexOf("."));
-          console.log(time);
           //value.createTime = me.format(new Date(value.createTime), "yyyy-MM-dd")
           value.createTime = videoUtil.formatTime(new Date(time))
         });
