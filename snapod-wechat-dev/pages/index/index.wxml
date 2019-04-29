@@ -64,7 +64,7 @@
   <van-button type="danger" custom-class="button" bind:click="report">举报</van-button>
 </van-popup>
 
-<van-tabbar active="{{ active }}" bind:change="onChang" fixed>
+<van-tabbar active="{{ active }}" bind:change="onChange" fixed>
   <van-tabbar-item icon="home-o">首页</van-tabbar-item>
   <van-tabbar-item icon="search">搜索</van-tabbar-item>
   <van-tabbar-item icon="plus">发布视频</van-tabbar-item>

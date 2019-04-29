@@ -72,5 +72,6 @@
     "request": 200000,
     "uploadFile": 200000
   },
-  "cloud": true
+  "cloud": true,
+  "sitemapLocation": "sitemap.json"
 }

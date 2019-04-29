@@ -13,7 +13,7 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/META-INF/resources/")
-                .addResourceLocations("file:/Users/hayashikoushi/Documents/code/GraduationProject/ProjectFile/");
+                .addResourceLocations("file:/Users/suarezlin/Documents/programming/GraduationProject/ProjectFile/");
     }
 
     @Bean
