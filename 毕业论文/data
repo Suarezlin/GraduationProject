@@ -1,0 +1,45 @@
+sysbench oltp_read_only.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=mysql_bench --tables=10 --table_size=100000 prepare
+
+sysbench oltp_read_only.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=mysql_bench --tables=10 --table_size=100000 --threads=8 --time=3600 --report-interval=10 --percentile=99 run
+
+
+Thread Group.jmx          oltp_delete.lua           oltp_read_write.lua       select_random_points.lua
+bulk_insert.lua           oltp_insert.lua           oltp_update_index.lua     select_random_ranges.lua
+jmeter.log                oltp_point_select.lua     oltp_update_non_index.lua tests
+oltp_common.lua           oltp_read_only.lua        oltp_write_only.lua
+
+
+sysbench oltp_read_write.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=mysql_bench --tables=10 --table_size=100000 prepare
+
+sysbench oltp_read_write.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=mysql_bench --tables=10 --table_size=100000 --threads=32 --time=120 --report-interval=10 --percentile=99 run
+
+
+ffmpeg -i IMG_1005.MOV -vcodec libx264 -c:a copy -profile:v high -s 1080x1920 -preset ultrafast -b:v 4M -r 29.97 output.mp4
+
+ffmpeg -i IMG_1005.MOV -vcodec h264 -s 1080x1920  -r 29.97 output2.mp4
+
+./psnr 1080 1920 420 ../original.yuv ../out1.yuv
+
+
+ffmpeg -i IMG_1005.MOV -vcodec h264_videotoolbox  -c:a copy -profile:v high -s 1080x1920 -preset ultrafast -b:v 6M -r 29.97 output.mp4
+
+ffmpeg -i IMG_1005.MOV -i a.mp3 -t 10 -vcodec h264_videotoolbox  -profile:v high -s 1080x1920 -preset medium -b:v 4M -r 29.97 output.mp4
+
+ffmpeg -i output.mp4 -c:v rawvideo -pix_fmt yuv420p out1.yuv
+ffmpeg -i output2.mp4 -c:v rawvideo -pix_fmt yuv420p out2.yuv
+ffmpeg -i IMG_1005.MOV -c:v rawvideo -pix_fmt yuv420p original.yuv
+
+
+
+
+./configure --enable-nonfree --enable-gpl --enable-version3 \
+--enable-libass --enable-libbluray --enable-libmp3lame \
+--enable-libopencv --enable-libopenjpeg --enable-libopus \
+--enable-libfdk-aac --enable-libtheora \
+--enable-libvpx --enable-libwebp --enable-opencl \
+--enable-opengl --cpu=native --enable-nvenc --enable-vaapi \
+--enable-vdpau  --enable-ladspa --enable-libass  --enable-libgsm \
+--enable-libsmbclient --enable-libsoxr \
+--enable-libspeex --enable-libssh --enable-libwavpack --enable-libxvid \
+--enable-libx264 --enable-libx265 --enable-openal \
+--enable-openssl --enable-cuda --prefix=/apps/ffmpeg/git --enable-omx
