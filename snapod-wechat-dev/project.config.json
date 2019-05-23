@@ -12,7 +12,7 @@
 		"autoAudits": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.4",
+	"libVersion": "2.6.6",
 	"appid": "wx409d42bc74d802e8",
 	"projectname": "snapod-wechat-dev",
 	"debugOptions": {

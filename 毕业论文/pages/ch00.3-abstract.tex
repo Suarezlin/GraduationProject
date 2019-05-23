@@ -1,6 +1,6 @@
 % 关键词，中文。用全角分号「；」分割
 % 研究生的应首先从《汉语主题词表》中摘选
-\ckeywords{行人重识别；深度学习；强化学习；多摄像头选择；多CPU集群}
+\ckeywords{Java；短视频应用；数据库优化；视频编码}
 
 % 提交日期，本科生不需要
 \cproddate{\the\year 年\the\month 月}
@@ -10,19 +10,19 @@
 \ctype{}
 
 % 论文标题，英文
-\etitle{Research for Multi-CPU Cluster Based Person Re-Identification}
+\etitle{Short Video Application Development Based on SpringBoot and Wechat Application}
 
 % 作者姓名，英文
-\eauthor{Yuanxun Li}
+\eauthor{Ziniu Lin}
 
 % 学科，英文，本科生不需要
 \esubject{}
 
 % 导师姓名，英文
-\esupervisor{Hui He}
+\esupervisor{Yongmei Gan}
 
 % 关键词，英文。用半角分号和一个半角空格「; 」分割
-\ekeywords{Person Re-Identification; Deep Learning; Reinforcement Learning; Multi-Cameras Selection; Multi-CPUs Cluster}
+\ekeywords{Java; Short Video Application; Database Optimization; Video Coding}
 
 % 学科门类，英文
 % 从Philosophy（哲学）、Economics（经济学）、Law（法学）、Education（教育学）、Arts（文学）、
@@ -41,18 +41,19 @@
 
 % 摘要，中文。段间空行
 \cabstract{
-    随着视频监控技术的发展，无人值守的视频监控设备被越来越普遍地部署在国民社会的各个方面。在视频监控领域一个很重要且极具挑战性的问题是行人重识别。行人重识别，指的是在多个视野不重叠的监控视频中，重新识别那些之前出现过的行人，这其中即使是同一个行人的图片也存在着视觉上和特征分布上的巨大差异。行人重识别在实际应用中受诸多因素的影响，包括摄像头的部署位置、成像质量以及摄像头数量等等。如何从海量的摄像头部署方案中挑选出较为优秀的方案，是一个非常具有现实意义的问题。行人重识别所基于的深度学习模型需要大量的计算资源，超级计算机是计算机中功能最强、运算速度最快、存储容量最大的一类计算机，一般由多CPU集群组成。当前面向超级计算机的深度神经网络训练研究还处于起步阶段，因此，本文将探索在多CPU集群上的深度行人重识别问题，特别是多摄像头部署方案选择问题，致力于在项目过程中发现和解决问题，推动理论的发展和实际的应用。
+	随着无线通讯技术以及智能手机技术的发展，短视频应用获得了巨大的用户基数。短视频应用中比较重要的问题是如何保存大量的用户数据以及如何适当的处理用户上传的大量视频等。如何保存大量用户的数据的问题需要通过合理选择数据库架构、数据库模式以及一定的数据库优化解决。如何适当处理用户上传视频的问题需要通过设置合理地上传方式、视频压制方式以及合理地储存架构来解决。本文通过探寻短视频应用系统开发过程中的各个问题，找出了一些解决方案，这对于解决实际的工程问题以及探寻短视频应用的商业模式有着实际的作用。
+	
+	本文实现了数据库优化领域的成熟成果，实现了对于数据库系统两方面的优化。第一方面优化为参数优化，在基准测试的衡量下对数据库做整体的优化。第二方面为具体查询优化，针对某一应用、某一查询单独优化数据库系统。这些优化措施在数据库运行时取得了理想的结果。
+	
+	本文也对视频编码器以及视频压制中的硬件加速效果进行了验证。短视频系统的瓶颈之一就是视频编码器编码速度的问题。通过选用适合短视频应用场景的视频编码器以及使用硬件加速技术可以使得视频压制的过程尽快进行。本文主要通过硬件加速对编码过程进行优化，并且这些优化措施达到了预期目的。
 
-    本文实现了行人重识别领域最新的研究成果，同时推出了一个全新的、包含多个摄像头的数据集的初始版本，并提出了基于强化学习的摄像头部署方案选择模型，该模型在自有数据集上取得了理想的结果，与人类的认知达成一致，具有很好的可解释性。本文还展示了将模型部署在多CPU集群上训练的结果，研究了多CPU集群对于深度神经网络的训练过程的影响。
-
-    本文实现的行人重识别基线模型取得了接近原论文的准确率和识别性能，为后期进一步研究行人重识别领域其它问题提供了强有力的支持。面向多CPU集群的深度行人重识别模型训练验证了CPU和GPU在进行海量单精度浮点数运算的性能差异，同时也展示了多CPU集群在训练深度神经网络方面的巨大潜力。本文推出的行人重识别数据集包含了17个摄像头，并且还包含了完整的行人跟踪场景，不仅在摄像头数量上远远多于现有主流的行人重识别数据集，而且为行人重识别问题新的评估方式的提出提供了基础。本文提出的基于强化学习模型的摄像头部署方案选择模型，将强化学习算法运用到多摄像头选择问题当中，不仅避免了穷举计算，而且达到了预期的效果。
 }
 
 % 摘要，英文。段间空行
 \eabstract{
-    With the development of video surveillance technology, unattended video surveillance devices are being deployed more and more widely in all aspects of the civil society. A very important and challenging issue in video surveillance is person re-identification. Person re-identification is to match individual images of the same person captured by different non-overlapping camera views against significant and unknown cross-view feature distortion. Person re-identificationy is affected by many factors in practical applications, including the deployment position of the cameras, the imaging quality, and the number of cameras. How to pick out a better scheme from a large number of camera deployment solutions is a very practical issue. Person re-identificationy based on the deep learning model requires a lot of computing resources. Supercomputer is the fastest, most powerful, and of the largest storage capacity computers, generally composed of multiple CPU clusters. The current deep neural network training for supercomputers is still in its infancy. Therefore, this paper will explore the issues of deep person re-identification on multi-CPU clusters, especially the selection of multi-camera deployment solutions, and is committed to discovering and solving problems during the project process, and promoting the development of theory and practical application.
-
-    This paper implemented the state-of-the-art of ​​person re-identification baseline model. At the same time, we introduced a initial version of a dataset containing multiple cameras, and proposed a camera deployment solution selection model based on reinforcement learning. This model is evaluated by our dataset. The results achieved, in agreement with human cognition, are very interpretable. This paper also shows the results of training the model deployed on a multi-CPU cluster, and studies the impact of multi-CPU clusters on the training process of deep neural networks.
-
-    The person re-identification baseline model re-implemented has achieved close to the original paper's accuracy and recognition performance, and is readily extended to further research on other areas of person re-identification. The deep person re-identification model based on multi-CPU clusters proved the performance difference between CPU and GPU in massive single-precision floating-point operations, and also shows the great potential of multi-CPU clusters in training deep neural networks. The person re-identification data set introduced in this paper contains 17 cameras, which is far more than the number of cameras in the current mainstream person re-identification dataset, and it also includes a complete pedestrian tracking scene, issuing a new person re-identification problem. The camera deployment scheme selection model based on the reinforcement learning model proposed in this paper applies the reinforcement learning algorithm to multiple camera selection problems, which not only avoids exhaustive calculations, but also achieves the desired results.
+    With the development of wireless communication and smart phone, some short video application gains a lot of users. Some serious problems in the development of short video application are how can system store users' information properly and how can system handle the videos provided by users quickly and so on.The first question can be solved by choosing suitable database system structure and the optimization of the database. The second question can be solved by setting suitable upload method, proper video coding algorithm and using right storage method. This paper focus on these problems and get some solution of these problems. This paper will helpful to the solving of really problems and tracking the commercial mode of short video application.
+    
+    This paper implemented some mature achievements in database optimization and realized two aspects of database system optimization. The first aspect is attribute optimization, which is optimize the whole database under benchmarking. The second aspect is optimizing the database system independently for an application or query. These optimization work very well when the database was running.
+    
+    This paper also checked the codec and the hardware acceleration effect of video encoding and video compression. One of the bottlenecks of short video system is the encoding speed of video encoder. Through choosing proper video encoder and using hardware acceleration can make doing video compression quickly. This paper mainly optimizes the encoding process through hardware acceleration, and these optimization measures achieve the desired purpose.
 }

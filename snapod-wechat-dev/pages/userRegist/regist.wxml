@@ -4,7 +4,7 @@
 
     <view>
       <view class="login-icon">
-        <image class="login-img" src="../resource/images/dsp.jpg"></image>
+        <image class="login-img" src="../resource/images/cover.jpg"></image>
       </view>
 
       <view class='inputGroup'>

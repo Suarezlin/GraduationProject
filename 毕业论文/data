@@ -9,19 +9,31 @@ jmeter.log                oltp_point_select.lua     oltp_update_non_index.lua te
 oltp_common.lua           oltp_read_only.lua        oltp_write_only.lua
 
 
-sysbench oltp_read_write.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=mysql_bench --tables=10 --table_size=100000 prepare
+sysbench oltp_read_write.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=sbtest --tables=10 --table_size=200000 prepare
 
-sysbench oltp_read_write.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=mysql_bench --tables=10 --table_size=100000 --threads=32 --time=120 --report-interval=10 --percentile=99 run
+sysbench oltp_read_write.lua --mysql-user=root --mysql-password=lzn19971012 --mysql-db=sbtest --tables=10 --table_size=200000 --threads=32 --time=1800 --report-interval=10 --percentile=99 run > ~/bench_result.txt &
+
+sysbench oltp_read_write.lua --mysql-host=139.224.10.186 --mysql-user=admin --mysql-password=123456 --mysql-db=sbtest --tables=10 --table_size=200000 prepare
+
+sysbench oltp_read_write.lua --mysql-host=139.224.10.186 --mysql-user=admin --mysql-password=123456 --mysql-db=sbtest --tables=10 --table_size=200000 --threads=32 --time=3600 --report-interval=10 --percentile=99 run > ~/Documents/bench_result.txt
+
+
+sysbench oltp_read_write.lua --mysql-user=admin --mysql-password=123456 --mysql-db=sbtest --tables=20 --table_size=500000 prepare
+
+
+sysbench oltp_read_write.lua --mysql-user=admin --mysql-password=123456 --mysql-db=sbtest --tables=20 --table_size=500000 --threads=32 --time=1800 --report-interval=10 --percentile=99 run > ~/bench_result.txt &
+
+iostat -dkxc 10 > ~/io.txt &
 
 
 ffmpeg -i IMG_1005.MOV -vcodec libx264 -c:a copy -profile:v high -s 1080x1920 -preset ultrafast -b:v 4M -r 29.97 output.mp4
 
-ffmpeg -i IMG_1005.MOV -vcodec h264 -s 1080x1920  -r 29.97 output2.mp4
+ffmpeg -i IMG_1005.MOV -vcodec h264 -s 1080x1920 -b:v 4M -r 29.97 -y output2.mp4
 
 ./psnr 1080 1920 420 ../original.yuv ../out1.yuv
 
 
-ffmpeg -i IMG_1005.MOV -vcodec h264_videotoolbox  -c:a copy -profile:v high -s 1080x1920 -preset ultrafast -b:v 6M -r 29.97 output.mp4
+ffmpeg -i IMG_1005.MOV -vcodec h264_videotoolbox -c:a copy -profile:v high -s 1080x1920 -preset medium -b:v 4M -r 29.97 -x264-params keyint=450 -y output.mp4
 
 ffmpeg -i IMG_1005.MOV -i a.mp3 -t 10 -vcodec h264_videotoolbox  -profile:v high -s 1080x1920 -preset medium -b:v 4M -r 29.97 output.mp4
 
@@ -43,3 +55,15 @@ ffmpeg -i IMG_1005.MOV -c:v rawvideo -pix_fmt yuv420p original.yuv
 --enable-libspeex --enable-libssh --enable-libwavpack --enable-libxvid \
 --enable-libx264 --enable-libx265 --enable-openal \
 --enable-openssl --enable-cuda --prefix=/apps/ffmpeg/git --enable-omx
+
+
+
+select v.id, u.face_image as face_image, u.nickname as nickname
+      from user_like_videos as ulv
+      join videos as v on v.id = ulv.video_id
+      join users as u on u.id = ulv.user_id
+      where ulv.user_id = '1902026YH9N73HX4'
+      and v.status = 1;
+
+
+0.51 sec

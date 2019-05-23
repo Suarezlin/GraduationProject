@@ -1,252 +1,144 @@
 \chapter{实验结果}\label{sec:experiment}
 
-\section{自采集数据呈现}
+\section{短视频应用系统}
+本系统选用 Spring Framework、Spring MVC 以及 MyBatis 框架实现。最终系统功能为用户注册、登录、发布视频、观看视频、视频点赞、关注用户、发表评论。
 
-本项目中自采集数据分为第一次预拍摄数据Multi-Cameras1和正式拍摄数据Multi-Cameras2，两次拍摄得到的数据集与现有行人重识别领域主流数据集的比较如表~\ref{tab:reiddataset}~所示。我们的数据集是唯一包含大量持续跟踪行人的数据集，同一行人至少会出现在17个视野不重叠的摄像头视野内，非常适合用于要求更苛刻的行人重识别以及行人追踪任务。需要注意的是，我们现阶段统计的行人数量，只包括完整地出现在所有摄像头内的人数，而实际视频画面中还出现了很多无标签的路人，若为这些路人打上正确的标签，那么数据集中行人数量会大大增加。
-
-\begin{table}[!htb]
-\centering
-\caption{行人重识别领域常见数据库情况统计}
-\label{tab:reiddataset}
-\begin{threeparttable}
-\begin{tabularx}{\textwidth}{ccccccc}
-\toprule
-数据集名称   & 公布时间 & 行人数量 & 摄像头数量 & 图片数量  & Multi-shot~\tnote{a} & Tracking~\tnote{b} \\ \midrule
-VIPeR~\cite{gray2007evaluating}  & 2007 & 632  & 2     & 1264  & 否  & 否 \\
-CUHK01~\cite{li2012human} & 2012 & 971  & 2     & 3884  & 否  & 否 \\
-CUHK03~\cite{li2014deepreid} & 2014 & 1467 & 10    & 13164 & 是  & 否 \\
-Market1501~\cite{zheng2015scalable} & 2015 & 1501 & 6     & 32217 & 是  & 否 \\
-DukeMTMC4reID~\cite{gou2017dukemtmc4reid}  & 2017 & 1852 & 8     & 46261 & 是  & 否 \\
-Multi-Cameras1 &  -~\tnote{c}   & 15~\tnote{d}   & 17     & 98543 & 是  & \textbf{是} \\
-Multi-Cameras2 &  -~\tnote{c}   & 463~\tnote{d} & 24     & -~\tnote{e} & 是  & \textbf{是} \\
-\bottomrule
-\end{tabularx}
-\begin{tablenotes}
-    \footnotesize
-    \item[a] 同一行人是否有超过 2 张图片。
-    \item[b] 是否持续追踪同一行人。
-    \item[c] 未来会公布数据库，时间待定。
-    \item[d] 该数字只包含完整走完全程的演员，还有大量无标签的路人未计入。
-    \item[e] 数字具体尚未统计，但预计会远大于100k。
-\end{tablenotes}
-\end{threeparttable}
-\end{table}
-
-\subsection{摄像头分布与分组}
-
-表~\ref{tab:cameraslayout}~展示了16个摄像头的拍摄画面和分组情况。在本次采集的数据集中一共有5个场景，分别为楼外停车场、一楼庭院、二楼走廊、三楼电梯出口、三楼走廊。这5个地点分布在一条连续路线上，每个地点存在2$\sim$4个摄像头，是十分适合用于研究行人追踪的场景。
-
-从表~\ref{tab:cameraslayout}~可以看出，相同拍摄地点的不同摄像头所拍摄的画面之间存在较大差异，如角度方面的差异：第2组场景一楼庭院，第1个摄像头拍摄的是行人的正背面，第2个摄像头拍摄的是行人的右俯视角度画面，第3个摄像头拍摄的是行人的左俯视角度画面。光线方面的差异：第3组场景二楼走廊，第1、4个摄像头距离行人很近，但是画面光线很暗，成像质量也很模糊，第2、3个摄像头光线较好。拍摄范围与通过时长的差异：第4组场景三楼电梯，第1、2个摄像头距离电梯门较近，行人出电梯后会在1$\sim$2秒内走出画面范围，因此相比于第3个摄像头所获得的信息相对较少。
-
-\begin{table}[!ht]
-\centering
-\caption{摄像头拍摄画面及分组}
-\label{tab:cameraslayout}
-\renewcommand{\arraystretch}{1.5}% Spread rows out...
-\begin{tabularx}{\textwidth}{>{\centering\bfseries}m{0.2\textwidth} >{\centering\arraybackslash}m{0.7\textwidth}}
-\toprule
-分组（场景名称） & \textbf{摄像头画面} \\
-\midrule
-1. 楼外停车场 & \includegraphics[width=25mm]{1-1}~\includegraphics[width=25mm]{1-2} \\
-2. 一楼庭院 & \includegraphics[width=25mm]{1-4}~\includegraphics[width=25mm]{1-5}~\includegraphics[width=25mm]{1-6} \\
-3. 二楼走廊 & \includegraphics[width=25mm]{2-1}~\includegraphics[width=25mm]{2-2}~\includegraphics[width=25mm]{2-3}~\includegraphics[width=25mm]{2-4} \\
-4. 三楼电梯 & \includegraphics[width=25mm]{3-1}~\includegraphics[width=25mm]{3-2}~\includegraphics[width=25mm]{3-3} \\
-5. 三楼走廊 & \includegraphics[width=25mm]{3-4}~\includegraphics[width=25mm]{3-5}~\includegraphics[width=25mm]{3-6}~\includegraphics[width=25mm]{3-7} \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-第5组场景三楼走廊也有类似情况，第1个摄像头的视野很窄，行人能够在很短时间内通过画面，而第4个摄像头则几乎能把行人通过走廊的整个过程记录下来。
-
-\subsection{行人检测效果及人工标注结果}
-
-行人检测使用了Detectron工具，由于Detectron实现了Mask RCNN，所以可以将行人的轮廓分割出来。图~\ref{fig:detectron}~展示了行人检测可视化的效果。
+\subsection{用户登录、注册}
+如图 \ref{fig:LoginRegister} 所示，本系统的登录与注册页面较为相似，用户在登录页面输入用户名密码后即可登录，且登录信息自动保存五天，五天内可不登录使用。登录成功后页面会自动跳转到应用首页。注册页面用户需输入系统内唯一的用户名和一个强密码，注册成功后会跳转到个人信息完善界面。
 
 \begin{figure}[!ht]
 \centering
-\subfloat[场景1]{\centering\includegraphics[width=0.3\textwidth]{1-2_5_151}}\quad
-\subfloat[场景2]{\centering\includegraphics[width=0.3\textwidth]{3-7_10_394}}\\
-\subfloat[场景1检测结果]{\centering\includegraphics[width=0.3\textwidth]{1-2_5_151_det}}\quad
-\subfloat[场景2检测结果]{\centering\includegraphics[width=0.3\textwidth]{3-7_10_394_det}}
-\caption{Detectron行人检测结果可视化}
-\label{fig:detectron}
-\end{figure}
-
-图~\ref{fig:label}~展示了经过人工标注后得到的同一行人在不同摄像头下的图片。从图中可以看出，同一行人在不同的视角下，差距很大，对于行人重识别算法以及人物跟踪任务极具挑战性。
-
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=\textwidth]{label}
-\caption{同一行人在不同摄像头下的图片}
-\label{fig:label}
-\end{figure}\vspace{-1em}
-
-\section{行人重识别算法}
-
-\subsection{训练Loss曲线}
-
-训练阶段交叉熵误差（Loss）随着数据集训练批次数（Epoch）变化曲线如图~\ref{fig:loss}~所示。图中共展示了第~\ref{sec:modeltraining}~小节所述的3个训练阶段的训练过程，每个阶段包含60个Epoch。从图中可以看出，交叉熵误差在第一训练阶段下降很明显，同时之后的测试结果~\cite{sun2017beyond}也显示只使用基线模型也能达到较好的效果，说明了基线模型的稳健性。
-
-% \begin{figure}[!ht]
-% \centering
-% \includegraphics[width=9.00cm]{loss}
-% \caption{交叉熵误差随着迭代次数变化曲线}
-% \label{fig:loss}
-% \end{figure}
-
-\begin{figure}[!ht]
-    \centering
-    \begin{tikzpicture}
-        \node (img)  {\includegraphics[width=9.00cm,trim={0 16 0 0},clip=true]{loss}};
-        \node[below=of img, node distance=0cm, yshift=1.1cm, xshift=0.1cm, font={\xiaoliu}] {训练数据批次（次）};
-        \node[left=of img, node distance=0cm, rotate=90, anchor=center, yshift=-1.5cm, xshift=-0.3cm, font={\xiaoliu}] {交叉熵误差};
-    \end{tikzpicture}
-    \caption{交叉熵误差随着迭代次数变化曲线}
-    \label{fig:loss}
+\subfloat[登录页面]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp1}}\quad\quad
+\subfloat[注册页面]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp2}}
+\caption{应用登录与注册页面}
+\label{fig:LoginRegister}
 \end{figure}
 
 
+\subsection{发布、观看视频}
 
-\subsection{测试准确率比较}
+如图 \ref{fig:index} 所示，用户在登录后即可在首页点击视频以进入视频详情页观看视频。用户可以在首页通过底部的功能栏快速执行搜索、发布视频、查看关注视频以及查看个人信息等功能。用户在首页也可以点击视频作者的头像进入作者个人信息页。
 
-表~\ref{tab:test}~为在Market1501测试集上的测试结果，可以看出复现的结果接近达到原论文~\cite{sun2017beyond}中显示的结果。从表中可以看出，我们的PCB模型的结果以及很接近原论文中所显示的结果，但存在一个问题，我们的模型中使用RPP方法带来的提升，不及其在原论文中的表现，说明我们RPP方法的实现存在与原论文不符的情况。由于原作者尚未公布源代码，所以只能推测导致这些差异可能存在的原因：一、模型参数的初始化方式不一致，导致我们的模型与原论文中的模型收敛到了不同的局部最小值；二、不确定原始RPP模型中用于像素分类的神经网络层是否加入了Batch Normalization~\cite{ioffe2015batch}层和Dropout~\cite{srivastava2014dropout}层，以及它们的具体参数是多少；三、训练过程不一致，在原论文中没有清晰地说明三个训练阶段的Epoch数，以及每个训练阶段的学习率变化情况，所以只能靠人工调参。
 
+\begin{figure}[!ht]
+\centering
+\subfloat[首页]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp4}}\quad\quad
+\subfloat[视频详情页]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp5}}\quad\quad
+\subfloat[视频发布页]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp3}}
+\caption{应用首页、视频详情页以及视频发布页}
+\label{fig:index}
+\end{figure}
+
+用户在视频详情页可以观看视频，并对视频作出操作如快速进入视频发布页、快速进入搜索页面、进入视频作者个人信息界面、视频点赞、评论、转发、回到首页进入自己个人信息页面等操作。
+
+用户可以选择使用相机拍摄视频或从相册中选择视频，用户选择完视频后进入视频发布页。用户在视频发布页可以选择视频背景音乐和视频描述信息。用户选择发布后，视频会被上传到服务端进行处理，处理完毕后即可在线观看。
+
+\subsection{视频点赞、关注用户与发表评论}
+
+用户可以对一个视频进行点赞以及关注某一个用户。如图 \ref{fig:LikeWatch} 所示，用户在点赞某视频后可以在自己的个人页面中的收藏夹找到。用户在关注某个用户后可以在自己个人页面的关注栏中找到关注用户发布的所有视频。
+
+\begin{figure}[!ht]
+\centering
+\subfloat[用户关注栏]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp6}}\quad
+\subfloat[用户收藏栏]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp7}}\quad
+\subfloat[视频评论]{
+	\centering
+	\includegraphics[width=0.2\textwidth]{weapp8}}
+\caption{视频收藏、用户关注与视频评论}
+\label{fig:LikeWatch}
+\end{figure}
+
+用户在视频详情页中点击评论按钮即可弹出视频的评论信息。如图 \ref{fig:LikeWatch} 所示，视频评论信息包含了对于该视频的所有的评论，用户可以发布视频的评论也可以对某一个评论进行回复。
+
+%\subsection{发表评论}
+%
+%用户在视频详情页中点击评论按钮即可弹出视频的评论信息。如图 \ref{fig:comments} 所示，视频评论信息包含了对于该视频的所有的评论，用户可以发布视频的评论也可以对某一个评论进行回复。
+%
+%\begin{figure}[!ht]
+%    \centering
+%    \includegraphics[width=0.5\textwidth]{weapp8}
+%    \caption{视频评论信息}
+%    \label{fig:comments}
+%\end{figure}
+
+
+
+\section{SQL 优化结果}
+SQL 优化包括参数优化和具体查询优化两部分。
+
+\subsection{参数优化}
+参数优化主要是根据基准测试对数据库做出的全局优化如调整缓存、日志输出等设置。参数优化的效果主要是通过数据库系统的基准测试体现的，这里使用 sysbench\cite{sysbench2019} 提供的在线事务 (OLTP) 测试功能来模拟一个在线电商服务的数据库读取情况进行数据库系统的基准测试。数据库系统基准测试主要测试标准有数据库每秒钟处理事务数 (tps)，数据库系统每秒钟处理查询数 (qps) 以及数据库查询延迟。
+
+基准测试采用在线事务读写测试，采用 32 个线程并发读写，测试数据库包含 10 张数据表，每个数据表包含 300000 条数据，基准测试时间为 1800 秒。进行数据库参数优化之前，基准测试结果为读取数据库 4401670 次，平均写入数据库 1257610 次，每秒处理事务数为 174.63，平均每秒处理查询数为 3492.62，平均查询延迟为 511.33 毫秒。由于服务器性能以及没有优化的原因，测试结果表现较差。每秒处理事务数、每秒处理查询数以及延迟时间变化情况如图 \ref{fig:bench_result} 所示。
+
+\begin{figure}[!ht]
+	\centering
+	\subfloat[TPS]{
+	 \centering
+	 \includegraphics[scale=0.8]{tps_compare.pdf}}\quad
+ \subfloat[QPS]{
+	 \centering
+	 \includegraphics[scale=0.8]{qps_compare.pdf}}\quad
+ \subfloat[延迟时间]{
+	 \centering
+	 \includegraphics[scale=0.8]{lat_compare.pdf}}
+	\caption{优化前后数据库基准测试结果}
+	\label{fig:bench_result}
+ \end{figure}
+
+对基准测试结果以及进行基准测试时数据库系统对资源的占用情况进行分析，数据库在进行大量数据并发读写时对磁盘利用率过高。这可能由于more的 innodb 储存引擎缓冲过小，频繁触发 innodb 最大脏页的限制，导致磁盘占用过高，优化可以从调整缓存大小以及优化日志文件等方面进行。由于本系统并不涉及很高的安全性同时每次事务提交都比较小，所以可以将 innodb\_flush\_log\_at\_trx\_commit\cite{姜承尧2011mysql} 属性设置为 0 或 2，来降低磁盘读写。最后通过改变存储引擎双写入缓冲设置来避免双写入缓冲。优化后，基准测试结果岁时间变化图如图  所示。经过优化后，数据库平均每秒处理事务数为 353.92，平均每秒处理查询数为 7078.34，平均查询延迟时间为 139.85毫秒。可见，优化后各项数据均有比较明显的提升，优化操作对数据库行呢个提升有非常大的帮助。
+
+\subsection{查询优化}
+
+进行查询优化前的元查询为通过嵌套查询与自然连接的方式实现。通过数据库 explain\cite{mysql2019} 命令分析得出的查询执行计划如表 \ref{tab:pre_explain} 所示，数据库在执行该查询时创建了一个临时表，同时由于查询属性上没有设置索引，数据库对用户与用户视频关系进行了全表扫描，效率较低，查询速度很慢。
 \begin{table}[!ht]
     \centering
-    \caption{Market1501数据集测试结果}
-    \label{tab:test}
-    \begin{threeparttable}
-    \begin{tabularx}{\textwidth}{p{0.28\textwidth}p{0.2\textwidth}<{\centering}p{0.2\textwidth}<{\centering}p{0.2\textwidth}<{\centering}}
+    \caption{优化前查询语句查询方案分析表}
+	\label{tab:pre_explain}
+	\footnotesize
+    \begin{tabularx}{\textwidth}{cccccccc}
     \toprule
-                            & mAP~(\%)   & Rank1~(\%) & Rank10~(\%) \\ \midrule
-    PCB~(paper)~\tnote{a}    & 77.40  & 92.30  & 98.20   \\
-    PCB+RPP~(paper)~\tnote{a}& 81.60  & 93.80  & 98.50   \\
-    PCB                      & 73.10  & 87.20  & 93.40   \\
-    PCB+RPP                  & 74.03  & 89.43  & 94.40   \\ \bottomrule
-    \end{tabularx}
-    \begin{tablenotes}
-        \footnotesize
-        \item[a] 原论文~\cite{sun2017beyond}中显示的结果。
-    \end{tablenotes}
-    \end{threeparttable}
-
-\end{table}
-
-\subsection{测试结果可视化}
-
-图~\ref{fig:testvis}~是行人重识别模型在Market1501数据集上测试结果的可视化，左边一列是查询图片，每一张查询图片相应的右边一行是从测试库中挑选出来的图片，有红色边框的图片代表该人物标签与相应的查询图片人物标签不一致。从图中可以看出模型的效果比较理想，仅存在少量出错的情况。同时注意到原数据库~\cite{zheng2015scalable}中存在ground truth出错的情况，影响了评估指标的准确性。
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{vis3}
-    \caption{测试结果可视化}
-    \label{fig:testvis}
-\end{figure}
-
-\section{强化学习算法}
-
-\subsection{学习后选择的部署方案}
-
-表~\ref{tab:rlresult}~为经过强化学习训练后的智能体在应对各种状态时，最有可能采取的行动统计。其中方案~(1, 2, 7, 10, 14)~表示摄像头ID分别为1, 2, 7, 10, 14的部署方案，其它方案的表示可以此类推。表中第二列表示该方案作为其它方案的最优转移方案的频次，第三列表示该方案最优频次占方案总数的比例。
-
-智能体经过强化学习训练，对当前环境有了了解之后，假设采用贪心的策略，即无论当前处于什么状态，都采取使得长期价值最高的动作。基于此假设，表~\ref{tab:rlresult}~显示，在所有可能的状态中，智能体处于其中的约$2/3$的状态下时都会一次性地转入~(1, 2, 7, 10, 14)~状态，因此该状态可以认为是智能体所选择的最优状态，该状态的可视化结果见图~\ref{fig:rlresult}~。处于其余约$1/3$的状态下时会转入~(1, 2, 7, 10, 13)~这个次优状态，可以看出，此方案与最优方案之间的区别，仅仅在于最后一组的摄像头的选择，而经过检查，该摄像头的成像质量也比较优秀。与此同时，当智能体处于该次优方案的状态时，长期价值最高的动作是转入最优方案状态。同时剩余的三种状态也会马上转入最优方案状态。因此可以得出结论：无论智能体当前处于什么状态，至多经过两步，即可到达最优状态。
-
-\begin{table}[h!]
-    \centering
-    \caption{学习后选择的部署方案}
-    \label{tab:rlresult}
-    \begin{tabularx}{\textwidth}{p{0.4\textwidth}p{0.3\textwidth}p{0.3\textwidth}}
-    \toprule
-    方案               & 频次  & 占比~(\%)  \\ \midrule
-    (1, 2, 7, 10, 14) & 190 & 65.97 \\
-    (1, 2, 7, 10, 13) & 78  & 27.08 \\
-    (1, 2, 7, 9, 14)  & 18  & 6.15  \\
-    (1, 3, 7, 10, 14) & 1   & 0.35  \\
-    (0, 2, 7, 10, 14) & 1   & 0.35  \\ \bottomrule
+    编号 & 查询类型 & 查询表 & 执行类型 & 可能使用索引 & 实际使用索引 & 估计查找行数 & 备注  \\ \midrule
+    1 & SIMPLE & <subquery3> & ALL & NULL & NULL & NULL & NULL \\
+    1 & SIMPLE & videos & eq\_ref & PRIMARY & PRIMARY & 1 & NULL \\
+    1 & SIMPLE & u & ALL & NULL & NULL & 99803 & Using where; \\ 
+    3 & MATERIALIZED & user\_like\_videos & ALL & NULL & NULL & 223167 & Using where; \\ \bottomrule
     \end{tabularx}
 \end{table}
 
-图~\ref{fig:rlresult}~是监控方案(1, 2, 7, 10, 14)的可视化结果。图中的每一张图片代表从一组摄像头中选取的一个摄像头所拍摄的场景。从图中可以看到，选取的摄像头光线充足、画面清晰、角度端正、视野范围宽阔，是一个理想的摄像头部署方案。
-
-\begin{figure}[!ht]
-    \centering
-    \subfloat[楼外停车场，ID为1]{\centering\includegraphics[width=0.3\textwidth]{1-2}}\quad
-    \subfloat[一楼庭院，ID为2]{\centering\includegraphics[width=0.3\textwidth]{1-4}}\\
-    \subfloat[二楼走廊，ID为7]{\centering\includegraphics[width=0.3\textwidth]{2-3}}\quad
-    \subfloat[三楼电梯，ID为10]{\centering\includegraphics[width=0.3\textwidth]{3-2}}\quad
-    \subfloat[三楼走廊，ID为14]{\centering\includegraphics[width=0.3\textwidth]{3-6}}
-    \caption{经强化学习训练后选择的最优部署方案可视化}
-    \label{fig:rlresult}
-\end{figure}
-
-\section{分布式CPU训练}
-
-天河二号拥有约 17920 个计算节点，每个通用节点配备两颗 Xeon E5 系列 12 核心的中央处理器、三个 XeonPhi 57 核心的协处理器（运算加速卡），总内存容量约 1.4PB，全局存储总容量约 12.4PB~\cite{tianhe2018config}。2017 年 9 月，天河二号启动升级工程，二期系统天河二号 A 采用国产加速器 Matrix 2000，替换原有的 Xeon Phi 57 加速器，升级后系统峰值运算速度将达到 94.97Pflops~\cite{tianhe2017summary}。天河二号各分区的详细配置如表 ~\ref{tab:tianheconfig}~。天河二号的节点分别属于三个分区：CPU 分区、GPU 分区和胖节点分区。本项目使用了天河二号的 GPU 分区，与其它分区最大的不同在于 GPU 分区每个节点都配备了 2 块 NVIDIA Tesla K80 显示卡，显示内存 VRAM 为 24GB，单精度浮点数运算速度为 8.74 TFLOPS，双精度浮点数的运算速度为 2.91 TFLOPS。每个节点同时具备高性能的 CPU 和 GPU 运算能力，方便进行深度神经网络模型训练的对比测试。与此同时，各节点之间通过千兆网络进行连接，可用于搭建多节点分布式计算网络。
-
-天河二号的节点分为登陆节点和计算节点。登陆节点主要用于代码编译、数据解压、环境配置等工作。计算节点配备了高性能的 CPU 和 GPU，主要用于大数据计算，以及大规模的编译任务。登陆节点和计算节点的操作系统均为 CentOS 7，系统使用 slurm 作业管理系统管理作业队列，使用 module 管理各种可选的软件包、运行库。
-
-\begin{table}[!ht]
-\centering
-\caption{天河二号各分区配置表}
-\label{tab:tianheconfig}
-\begin{tabularx}{\textwidth}{p{0.08\textwidth}<{\centering}p{0.08\textwidth}<{\centering}p{0.35\textwidth}<{\centering}p{0.10\textwidth}<{\centering}p{0.25\textwidth}<{\centering}}
-\toprule
-\multicolumn{2}{c}{节点 / 分区}  & CPU                          & 内存    & GPU                  \\ \midrule
-\multicolumn{2}{c}{CPU 分区}  & 2 $\times$ 12 Intel Xeon E5-2692 v2 & 64GB  & -                    \\
-\multicolumn{2}{c}{GPU 分区}  & 2 $\times$ 10 Intel Xeon E5-2660 v3 & 256GB & 2 $\times$ NVIDIA Tesla K80 \\
-\multirow{3}{*}{胖节点} & 128GB & 2 $\times$ 12 Intel Xeon E5-2692 v2 & 128GB & -                    \\
-                        & 3TB   & 4 $\times$ 14 Intel Xeon E7-4850 v3 & 3TB   & -                    \\
-                        & 6TB   & 8 $\times$ 16 Intel Xeon E7-8867 v3 & 6TB   & -                    \\ \bottomrule
-\end{tabularx}
-\end{table}
-
-\subsection{多CPU集群分布式训练与单机的比较}
-
-表~\ref{tab:comp1}~展示了深度行人重识别模型分别在单机及多CPU集群上训练的时间性能。第二行代表模型完整训练一个数据批次（epoch）所需的时间。从表中可以看出，采用多CPU集群取得的时间收益，与CPU节点个数近似地成线性比例关系，仅仅增加了一些节点之间通信的开销。同时，随着节点数目的增加，节点之间的通信开销也没有快速增长的趋势，说明了分布式训练的正确性和有效性。
+对于查询创建临时表以及查询属性没有索引的问题可以使用数据库的内连接操作代替嵌套查询以及在相应属性列上建立索引来解决。使用数据库的内连接操作将原先的嵌套查询语句进行重构，并在所有的查询属性上建立 B-Tree 索引来加速查找。修改过后该插叙语句的执行计划如表 \ref{tab:af_explain} 所示，优化过后查询没有产生临时表，且所有的表在查找时都用到了索引，查询次数大大减小，效率也提高了。
 
 \begin{table}[!ht]
     \centering
-    \caption{多CPU集群分布式训练与单机的比较}
-    \label{tab:comp1}
-    \begin{threeparttable}
-    \begin{tabularx}{\textwidth}{X<{\centering}X<{\centering}X<{\centering}}
+    \caption{优化后查询语句查询方案分析表}
+	\label{tab:af_explain}
+	\footnotesize
+    \begin{tabularx}{\textwidth}{cccccccc}
     \toprule
-    集群节点个数 & 时间~(~s/epoch~) & 分布式开销~(~s~)~\tnote{a} \\ \midrule
-    1 & 5821 & 0   \\
-    2 & 3016 & 211 \\
-    4 & 1536 & 323 \\
-    5 & 1219 & 274 \\ \bottomrule
+    编号 & 查询类型 & 查询表 & 执行类型 & 可能使用索引 & 实际使用索引 & 估计查找行数 & 备注  \\ \midrule
+    1 & SIMPLE & u & const & PRIMARY, unique\_id & PRIMARY & 1 & NULL \\
+    1 & SIMPLE & ulv & ref & user & user & 29870 & NULL; \\ 
+    1 & SIMPLE & v & eq\_ref & PRIMARY & PRIMARY & 1 & Using where; \\ \bottomrule
     \end{tabularx}
-    \begin{tablenotes}
-        \footnotesize
-        \item[a] 分布式开销$=$分布式训练所用时间$\times$节点个数$-$单机训练时间
-    \end{tablenotes}
-    \end{threeparttable}
 \end{table}
 
-\subsection{多CPU集群分布式训练与GPU的比较}
 
-本文还将多CPU集群与单机GPU训练深度行人重识别模型进行比较，不出意外的是，单机GPU以326 s/epoch的速度将单机CPU远远甩开，按照表~\ref{tab:comp1}~的结果估计，大约需要包含20个节点的CPU集群才能追平GPU的速度。由此可见在运算速度上，多CPU集群不占优势。而多CPU集群相对于GPU的优势在于，其可能很轻松地拥有海量的内存，且十分容易扩展，因此可以实现同时大批量数据的运算，增大训练中的 Batch Size，使得模型参数的梯度计算更加准确，从而可以使用更大的学习率。与此同时，根据Smith等人~\cite{smith2017don}的研究，在训练过程中动态地增加Batch Size，可以代替动态地衰减学习率。使用大的学习率，可以加速模型参数的收敛，因此训练模型可以经历更少的Epoch，达到加速训练的目的。
+在包含十万个测试用户、一百万个测试视频以及三十万个测试用户视频关系的数据库中进行测试，优化前语句执行速度为 277.64 秒，这样的速度显然是不能接受的，优化后查询执行速度达到了 1.75 秒，可见优化对于查询语句执行速度提升的效果非常明显。
 
-% 表~\ref{tab:comp2}~是多CPU集群（包含5个CPU节点）与GPU在训练深度行人重识别模型时，不同的Batch Size、学习率、Epoch数以及准确率的比较。
 
-% \begin{table}[h!]
-%     \centering
-%     \caption{多CPU集群分布式训练与GPU的比较}
-%     \label{tab:comp2}
-%     \begin{threeparttable}
-%     \begin{tabularx}{\textwidth}{X<{\centering}X<{\centering}X<{\centering}X<{\centering}X<{\centering}X<{\centering}}
-%     \toprule
-%     模型    & Batch Size & 学习率~\tnote{a} & Epoch数 & 训练时间~(s) & Rank1~(\%)  \\ \midrule
-%     GPU     & 48 & 0.1 & 60 & - & 89.43 \\
-%     CPU集群1 & 128 & 0.5 & 40 & - & - \\
-%     CPU集群2 & 256 & 1.0 & 30 & - & - \\
-%     CPU集群3 & 512 & 2.0 & 20 & - & - \\
-%     CPU集群4 & 768 & 3.0 & 10 & - & - \\ \bottomrule
-%     \end{tabularx}
-%     \begin{tablenotes}
-%         \footnotesize
-%         \item[a] 初始的基准学习率
-%     \end{tablenotes}
-%     \end{threeparttable}
-% \end{table}
+\section{视频编码优化结果}
+优化前采用 x264 作为视频编码器，参数设置为视频分辨率为 $1920\times1080$、视频帧率为 29.97 帧以及视频码率设置为 4Mbps。测试视频为 $1920\times1080$ 分辨率、60 帧、时长 10秒的手机拍摄视频。优化前压制时间为 26.3 秒，压制后视频平均相对原视频失真即 平均PSNR 为 39.96。优化后，视频编码器采用支持硬件加速的 h264\_videotoolbox 编码器、使用 CPU 核心显卡进行硬件加速。视频压制参数设置为 视频分辨率为 $1920\times1080$、视频帧率为 29.97 帧、视频码率设置为 4Mbps、视频 prifile 设置为 High 、压制时采用 h264 编码的 medium 预设以及由于短视频长度较短，用户不太可能拉动视频进度条，所以增大默认的关键帧间隔，测试视频不变。优化后，压制视频所需时间为 4.34 秒、平均 PSNR 为 39.28。可见优化在视频失真度基本不变时，大大降低了压制视频所需时间。
