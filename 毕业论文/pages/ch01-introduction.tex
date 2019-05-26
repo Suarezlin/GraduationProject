@@ -13,7 +13,7 @@
 当网络应用的用户数较大、同时访问人数较多时，应用系统的瓶颈通常位于服务器的 I/O 输入输出、数据库的操作以及服务器的带宽上，此时，单纯的增加服务器的数量往往不能有效地解决问题\cite{rosenfeld2002information}。因此，合理设计应用系统架构、合理地进行技术选型是非常有用的，有必要对各类型应用架构进行深入地调查、分析与研究。
 
 \section{研究现状}
-本节引入了与本设计紧密相关的部分内容：Java Web 技术、数据库技术以及 FFmpeg 技术。
+本节引入了与本设计紧密相关的部分内容：Java Web 技术、数据库技术、视频编码技术以及微信小程序技术。
 
 \subsection{Java Web 技术}
 
@@ -21,9 +21,59 @@ Java Web 技术即使用 Java 语言开发运行在 JVM(Java 虚拟机) 上的�
 
 EJB 即 Enterprise Java Bean 是一个企业级的 Java 框架，内置了 JBOSS 服务器。图\ref{fig:ejb} 是 EJB 框架的架构图，EJB 框架提供了分布式应用功能，即你可以将一个应用分散到多个服务器上，由多个 Java 虚拟机一同运行\cite{johnson2004expert}。此外 EJB 还提供了组件化支持与持久化管理功能。EJB 技术可以有效地提高 Java 企业级应用开发的效率，但与此同时，EJB 也产生了许多负面影响，如：EJB 使得应用系统更难测试、使应用系统更难部署、破坏了面向对象准则等。因此需要合理地抉择是否使用 EJB。需要使用 EJB 的情景有：应用的部分组件需要被远程访问的情景以及需要对应用进行分布式部署的情景。
 
+
+% \begin{tikzpicture}
+%     % [L1Node/.style={circle,   draw=blue!50, fill=blue!20, very thick, minimum size=10mm},
+%     % L2Node/.style={rectangle,draw=green!50,fill=green!20,very thick, minimum size=10mm}]
+%     [
+%         L1Node/.style={rectangle,draw=green!50,fill=green!20,very thick, minimum size=10mm},
+%         Tag/.style={rectangle}
+%     ]
+
+%     \draw (0,0) rectangle (10, 15);
+%     \node[Tag] (tag1) at (5, 15){EJB 架构图};
+%     \node[L1Node] (n1) at (2, 2){JSP};
+
+% \end{tikzpicture}
+
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{EJB.png}
+    %\includegraphics[width=0.7\textwidth]{EJB.png}
+    \begin{tikzpicture}
+        [
+        L1Node/.style={rectangle,draw=green!50,fill=green!20,very thick, minimum width=30mm, minimum height=10mm},
+            Tag/.style={rectangle},
+			L2Node/.style={rectangle,draw=blue!50,fill=blue!20,very thick, minimum width=30mm, minimum height=10mm},
+			L3Node/.style={rectangle,draw=red!50,fill=red!20,very thick, minimum width=30mm, minimum height=10mm},
+			L4Node/.style={rectangle,draw=gray!50,fill=gray!20,very thick, minimum width=30mm, minimum height=10mm},
+			L5Node/.style={rectangle,draw=purple!50,fill=purple!20,very thick, minimum width=30mm, minimum height=10mm},
+        ]
+    
+        \draw (0.5,0) rectangle (11, 8);
+		\draw (1,1.5) rectangle (5, 7);
+        \node[Tag] (tag1) at (5.5, 7.5){EJB 架构图};
+		\node[Tag] (tag2) at (3, 6.5){EJB 客户端};
+        \node[L1Node] (n1) at (3, 5.5){JSP};
+
+\node[L2Node] (n2) at (3, 4){Servlet};
+\node[L3Node] (n3) at (3, 2.5){Java App};
+
+
+\draw (6.5, 0.5) rectangle (10.5, 7);
+\node[Tag] (tag3) at (8.5, 6.5){EJB 服务器};
+\draw (6.5, 0.5) rectangle (10.5, 6);
+\node[Tag] (tag4) at (8.5, 5.5){EJB 容器};
+\node[L4Node] (n4) at (8.5, 4.5){Enterprise Bean};
+\node[L4Node] (n5) at (8.5, 3){Enterprise Bean};
+\node[L5Node] (n6) at (8.5, 1.5){JPA};
+
+\node (n7) at (5,4.25) {};
+\node (n8) at (6.5,4.25){};
+
+\draw [->,thick] (n7) to (n8);
+\node[Tag] (taga) at (5.75, 4.5){调用};
+    
+    \end{tikzpicture}
     \caption{EJB 框架架构图}
     \label{fig:ejb}
 \end{figure}
@@ -32,7 +82,59 @@ Spring 框架是目前非常流行的 Java 框架，图\ref{fig:spring} 展示�
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.7\textwidth]{spring.png}
+    %\includegraphics[width=0.7\textwidth]{spring.png}
+    \begin{tikzpicture}
+[L1Node/.style={rectangle,draw=green!50,fill=green!20,very thick, minimum width=20mm, minimum height=10mm},
+Tag/.style={rectangle},
+L2Node/.style={rectangle,draw=blue!50,fill=blue!20,very thick, minimum width=25mm, minimum height=10mm},
+L3Node/.style={rectangle,draw=red!50,fill=red!20,very thick, minimum width=20mm, minimum height=8mm},
+L4Node/.style={rectangle,draw=gray!50,fill=gray!20,very thick, minimum width=20mm, minimum height=8mm},
+GrayNode/.style={rectangle,draw=gray!50,fill=gray!20,very thick, minimum width=45mm, minimum height=8mm},
+L5Node/.style={rectangle,draw=purple!50,fill=purple!20,very thick, minimum width=20mm, minimum height=10mm},
+BlueBig/.style={rectangle,draw=blue!60,fill=blue!30,very thick,minimum width=112.5mm, minimum height=10mm},
+White/.style={rectangle,draw=black!50,fill=white,very thick, minimum width=25mm, minimum height=10mm}]
+
+
+% 外框
+\draw (0.25,0) rectangle (12, 10);
+\node[Tag] (t1) at (6.125, 9.5) {Spring 5};
+
+%测试
+\node[BlueBig] (n1) at (6.125, 0.75) {测试};
+
+%核心容器
+\draw (0.5, 1.5) rectangle (11.75, 3.5);
+\node[Tag] (t1) at (6.125, 3.25) {核心容器};
+\node[White] (n2) at (2, 2.25) {Beans};
+\node[White] (n3) at (4.75, 2.25) {Core};
+\node[White] (n4) at (7.5, 2.25) {Context};
+\node[White] (n5) at (10.25, 2.25) {Expression};
+
+% 中间部分
+\node[L2Node] (n6) at (2, 4.25) {AOP};
+\node[L2Node] (n7) at (4.75, 4.25) {Aspects};
+\node[L2Node] (n8) at (7.5, 4.25) {Instrument};
+\node[L2Node] (n9) at (10.25, 4.25) {Messaging};
+
+% 数据存取
+\draw (0.5, 5) rectangle (6, 9);
+\node[Tag] (t2) at (3.25, 8.5) {数据存取};
+\node[GrayNode] (n10) at (3.25, 5.65) {事务};
+\node[L4Node] (n11) at (2, 6.65) {OXM};
+\node[L4Node] (n12) at (4.5, 6.65) {JMS};
+\node[L4Node] (n13) at (2, 7.65) {JDBC};
+\node[L4Node] (n14) at (4.5, 7.65) {ORM};
+
+% Web
+\draw (6.25, 5) rectangle (11.75, 9);
+\node[Tag] (t2) at (9, 8.5) {Web};
+\node[L1Node] (n15) at (7.75, 5.75) {Web};
+\node[L1Node] (n16) at (10.25, 5.75) {WebFlux};
+\node[L1Node] (n17) at (7.75, 7.25) {WebSocket};
+\node[L1Node] (n18) at (10.25, 7.25) {WebMVC};
+
+\end{tikzpicture}
+
     \caption{Spring 模块组织图}
     \label{fig:spring}
 \end{figure}
@@ -53,6 +155,9 @@ Spring 框架是目前非常流行的 Java 框架，图\ref{fig:spring} 展示�
 
 视频编码技术是对视频进行压缩以更好地适应网络传输的技术。目前最新的视频编码国际标准 - 高效视频编码HEVC，已于2013年由JCT-VC正式颁布，其压缩性能在前一代H.264/AVC的基础上提高了一倍。优秀的视频编码可以有效地在尽可能小地影响画质的基础上对视频进行大幅度地压缩\cite{万帅2014新一代高效视频编码}。视频编码技术在本设计中有着重要的作用。
 
+\subsection{微信小程序}
+微信小程序是一种基于微信的混合应用。微信小程序使用方便、无需安装、不占空间、用完即走。本程序用户交互端基于微信小程序。
+
 \section{论文的主要工作}
 
 本节介绍了本次毕业设计中的各项具体工作。
@@ -69,5 +174,3 @@ Spring 框架是目前非常流行的 Java 框架，图\ref{fig:spring} 展示�
 \section{论文的组织结构}
 
 本文主要结构如下：第~~\ref{sec:theory}~~章讲述了本文主要使用的技术框架与理论。第~~\ref{sec:algorithm}~~章详细讲述了项目各部分的具体实现优化措施。第~~\ref{sec:experiment}~~章展示项目开发成果与优化结果。第~~\ref{sec:conclusion}~~章总结了项目和论文。
-
-%论文剩余部分的结构如下：第~~\ref{sec:theory}~~章讲述了本文主要工作的理论框架、模型和算法，第~~\ref{sec:algorithm}~~章详细讲述了项目中各工作的算法及其实现，以及实现过程中使用的协议和参数。第~~\ref{sec:experiment}~~章展示了详细的实验结果，并做了详细地分析和讨论。第~~\ref{sec:conclusion}~~章总结了项目和论文，以及介绍了今后的工作。

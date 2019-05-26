@@ -15,17 +15,59 @@
 %\usepackage{subfigure}
 
 \usepackage{tikz}
+\tikzset{add/.style n args={4}{
+    minimum width=6mm,
+    path picture={
+      \draw[black] 
+        (path picture bounding box.south east) -- (path picture bounding box.north west)
+        (path picture bounding box.south west) -- (path picture bounding box.north east);
+      \node at ( $(path picture bounding box.south)+(0,0.13)$ )   {\tiny #1};
+      \node at ( $(path picture bounding box.west)+(0.13,0)$ )   {\tiny #2};
+      \node at ( $(path picture bounding box.north)+(0,-0.13)$ )    {\tiny #3};
+      \node at ( $(path picture bounding box.east)+(-0.13,0)$ )   {\tiny #4};
+      }
+    }
+}
+% \usepackage{tikz-er2}
 %\usepackage{ulem}
 \usepackage{etoolbox}
 \usetikzlibrary{positioning}
 \input{figures/tikzfig.tex}
 
+\usepackage[simplified]{pgf-umlcd}
+
+\usepackage{pgf-umlsd}
+
+\usetikzlibrary{shapes.geometric,calc,arrows.meta,er,positioning,shapes.geometric}
 \usepackage{wrapfig} % 多张图片
 \usepackage{overpic} % mask_rcnn
 \usepackage{algorithm} % 算法框图
 \usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage{listings}
+
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+     language=Java,
+     aboveskip=3mm,
+     belowskip=3mm,
+     showstringspaces=false,
+     columns=flexible,
+     basicstyle = \ttfamily\small,
+     numbers=none,
+     numberstyle=\tiny\color{gray},
+     keywordstyle=\color{blue},
+     commentstyle=\color{dkgreen},
+     stringstyle=\color{mauve},
+     breaklines=true,
+     breakatwhitespace=true,
+     tabsize=3
+}
+
 \floatname{algorithm}{算法}
 \renewcommand{\algorithmicrequire}{\textbf{输入：}}
 \renewcommand{\algorithmicensure}{\textbf{输出：}}
@@ -47,9 +89,9 @@
     \input{pages/ch00.3-abstract}
 
     % 封面
-    %\xjtuchead
+    \xjtuchead
     % 任务书
-    %\ctaskdescription
+    \ctaskdescription
     % 评审意见
     %\creviewopinion
     % 答辩结果
@@ -86,9 +128,9 @@
     \xjtubib{bibliography}
 
     % % 附录
-    %\xjtuappendix
-        %\input{pages/ch07-appendice}
-    %\xjtuendappendix
+    \xjtuappendix
+        \input{pages/ch07-appendice}
+    \xjtuendappendix
 
     % 摘要信息
     %\input{pages/ch99.0-topicreview}

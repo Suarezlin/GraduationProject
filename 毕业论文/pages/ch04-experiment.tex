@@ -110,7 +110,7 @@ SQL 优化包括参数优化和具体查询优化两部分。
     \caption{优化前查询语句查询方案分析表}
 	\label{tab:pre_explain}
 	\footnotesize
-    \begin{tabularx}{\textwidth}{cccccccc}
+	\begin{tabularx}{\textwidth}{cccccccc}
     \toprule
     编号 & 查询类型 & 查询表 & 执行类型 & 可能使用索引 & 实际使用索引 & 估计查找行数 & 备注  \\ \midrule
     1 & SIMPLE & <subquery3> & ALL & NULL & NULL & NULL & NULL \\
@@ -126,7 +126,7 @@ SQL 优化包括参数优化和具体查询优化两部分。
     \centering
     \caption{优化后查询语句查询方案分析表}
 	\label{tab:af_explain}
-	\footnotesize
+	\small
     \begin{tabularx}{\textwidth}{cccccccc}
     \toprule
     编号 & 查询类型 & 查询表 & 执行类型 & 可能使用索引 & 实际使用索引 & 估计查找行数 & 备注  \\ \midrule

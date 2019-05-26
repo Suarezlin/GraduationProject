@@ -7,15 +7,7 @@
 \subsection{需求分析}
 设计数据库首先要进行需求分析\cite{gamma1995design}。本系统需要数据库来管理与储存用户信息、视频信息、视频的评论信息用户以及用户与视频的各种关系。用户信息包含用户的系统内唯一编号、用户名、密码、注册时间、用户头像以及用户各项统计信息等内容。视频信息包括视频名称、视频文件存放位置、视频作者、视频相关统计信息等内容。评论信息包含评论人、评论内容、评论种类、评论视频等内容。用户与视频关系包含关系类型、用户编号与视频编号等内容。
 
-为了需求分析的简便，我们先将用户与视频所有的信息放入一张表中，其 E-R 图如图 \ref{fig:ER1} 所示。随后我们要进行关系的规范化。
-
-\begin{figure}[!ht]
-    \centering
-    \includegraphics[width=0.5\textwidth]{dbs1.png}
-    \caption{需求分析数据库 E-R 图}
-    \label{fig:ER1}
-\end{figure}
-
+为了需求分析的简便，我们先将用户与视频所有的信息放入一张表中，随后我们要进行关系的规范化。
 
 \subsection{关系规范化}
 
@@ -25,7 +17,28 @@
 
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{dbs2.png}
+    %\includegraphics[width=0.6\textwidth]{dbs2.png}
+    \begin{tikzpicture}[auto,node distance=1.5cm]
+        \node[entity] (user) at (0, 0) {用户};
+	\node[entity] (video) at (5, 0) {视频};
+	\node[entity] (comment) at (2.5, -2.5) {评论};
+	\node[relationship] (publish) at (2.5, 0) {发布};
+	\node[relationship] (love) at (2.5, 2.5) {喜欢};
+	\node[relationship] (write) at (0, -2.5) {撰写};
+	\node[relationship] (have) at (5, -2.5) {拥有};
+	
+	\path (publish) edge node {1} (user)
+    edge node {n}	(video);
+	
+	\path (love) edge node {n} (user)
+    edge node {m}	(video);
+	
+	\path (write) edge node {1} (user)
+    edge node {n}	(comment);
+	
+	\path (have) edge node {1} (video)
+    edge node {n}	(comment);
+    \end{tikzpicture}
     \caption{规范化后数据库 E-R 图}
     \label{fig:ER2}
 \end{figure}
@@ -49,14 +62,33 @@
 \subsection{系统整体设计}
 本系统采用层次化结构进行开发，即将系统的功能由底至顶划分为若干层次，各层之间只能逐层单向调用，只能高级层次模块调用低级层次模块，系统各层次之间只提供相应接口，同时将具体实现屏蔽，这样增大了系统各模块内部的内聚度，减小了模块之间的耦合度，有利于系统开发。
 
+根据短视频系统的功能要求，本系统被划分为公用功能层、数据访问层、服务层以及应用接口层。如图 \ref{figs:soft1} 所示，公用功能层是整个系统的最底层，含有许多供上层模块使用的静态依赖。数据访问层包含两部分一部分是数据访问对象模块，负责操作数据库；另一部分是实体对象模块负责保存数据库返回的结构。服务层依赖于数据访问层，它负责接收应用接口层发送的请求，做与数据相关的前期处理，封装相应的数据访问操作，并将结果进行处理后返回应用接口层。应用接口层接收用户请求，并作出权限判断等于前端有关的处理后将请求转发给服务层，接收结果后封装成响应结构返回给用户。后端开发完毕后，即可按照系统功能划分开发相应的小程序页面，并与后端系统进行交互。
+
 \begin{figure}[!ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{soft1.png}
-    \caption{短视频系统数据流图}
+    %\includegraphics[width=0.8\textwidth]{soft1.png}
+    \begin {sequencediagram}
+\newthread{User}{用户}
+\newinst[1]{api}{应用接口层}
+\newinst[1]{service}{服务层}
+\newinst[1]{dao}{数据访问层}
+\newinst[1]{db}{数据库}
+
+\begin{call}{User}{发送请求}{api}{返回请求数据}
+    \begin{call}{api}{转发操作}{service}{返回操作结果}
+        \begin{call}{service}{调用}{service}{结果}
+        \end{call}
+        \begin{call}{service}{调用}{dao}{返回结果}
+            \begin{call}{dao}{查询数据}{db}{返回数据}
+            \end{call}
+        \end{call}
+    \end{call}
+\end{call}
+
+\end{sequencediagram}
+    \caption{短视频系统时序图}
     \label{figs:soft1}
 \end{figure}
-
-根据短视频系统的功能要求，本系统被划分为公用功能层、数据访问层、服务层以及应用接口层。如图 \ref{figs:soft1} 所示，公用功能层是整个系统的最底层，含有许多供上层模块使用的静态依赖。数据访问层包含两部分一部分是数据访问对象模块，负责操作数据库；另一部分是实体对象模块负责保存数据库返回的结构。服务层依赖于数据访问层，它负责接收应用接口层发送的请求，做与数据相关的前期处理，封装相应的数据访问操作，并将结果进行处理后返回应用接口层。应用接口层接收用户请求，并作出权限判断等于前端有关的处理后将请求转发给服务层，接收结果后封装成响应结构返回给用户。
 
 \subsection{系统具体实现}
 本系统的应用接口层由 SpringMVC 实现、服务层由 Spring IoC 与 Spring AOP 实现、数据访问层基于 MyBatis 框架与 Spring AOP。
