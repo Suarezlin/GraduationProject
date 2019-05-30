@@ -1,0 +1,50 @@
+%!tikz editor 1.0
+\documentclass{article}
+\usepackage{tikz}
+\usepackage[graphics, active, tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+
+%!tikz preamble begin
+
+%!tikz preamble end
+
+
+\begin{document}
+%!tikz source begin
+\begin{tikzpicture}[
+            L1Node/.style={rectangle,draw=green!50,fill=green!20,very thick, minimum width=30mm, minimum height=10mm},
+            Tag/.style={rectangle},
+			L2Node/.style={rectangle,draw=blue!50,fill=blue!20,very thick, minimum width=30mm, minimum height=10mm},
+			L3Node/.style={rectangle,draw=red!50,fill=red!20,very thick, minimum width=30mm, minimum height=10mm},
+			L4Node/.style={rectangle,draw=gray!50,fill=gray!20,very thick, minimum width=30mm, minimum height=10mm},
+			L5Node/.style={rectangle,draw=purple!50,fill=purple!20,very thick, minimum width=30mm, minimum height=10mm},
+        ]
+    
+        \draw (0.5,0) rectangle (11, 8);
+		\draw (1,1.5) rectangle (5, 7);
+        \node[Tag] (tag1) at (5.5, 7.5){Title};
+		\node[Tag] (tag2) at (3, 6.5){Title};
+        \node[L1Node] (n1) at (3, 5.5){JSP};
+
+\node[L2Node] (n2) at (3, 4){Servlet};
+\node[L3Node] (n3) at (3, 2.5){Java App};
+
+
+\draw (6.5, 0.5) rectangle (10.5, 7);
+\node[Tag] (tag3) at (8.5, 6.5){Title};
+\draw (6.5, 0.5) rectangle (10.5, 6);
+\node[Tag] (tag4) at (8.5, 5.5){Title};
+\node[L4Node] (n4) at (8.5, 4.5){Enterprise Bean};
+\node[L4Node] (n5) at (8.5, 3){Enterprise Bean};
+\node[L5Node] (n6) at (8.5, 1.5){JPA};
+
+\node (n7) at (5,4.25) {};
+\node (n8) at (6.5,4.25){};
+
+\draw [->,thick] (n7) to (n8);
+\node[Tag] (taga) at (5.75, 4.5){Call};
+
+\end{tikzpicture}
+%!tikz source end
+
+\end{document}
